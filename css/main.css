@@ -291,16 +291,22 @@ Screen - Game
    top: 200px;
 }
 
+#bird-canvas {
+   display: none;
+}
+
 .bird
 {
    position: absolute;
-   width: 34px;
-   height: 24px;
-   background-image: url('../assets/bird.png');
+   width: 40px;
+   height: 40px;
+   background-size: 40px;
+
+/*   background-image: url('../assets/bird.png');
 
    -webkit-animation: animBird 300ms steps(4) infinite;
    animation: animBird 300ms steps(4) infinite;
-}
+*/}
 
 .pipe
 {

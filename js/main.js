@@ -37,11 +37,41 @@ buzz.all().setVolume(volume);
 var loopGameloop;
 var loopPipeloop;
 
+
+
+function loadBirdImage() {
+   // var canvas = document.createElement("canvas");
+   var canvas=document.getElementById("bird-canvas");
+
+   var context = canvas.getContext('2d');
+   var image = new Image();
+   image.onload=function() {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
+      //var color = { r: 255, g: 0, b: 0, a: 255 };
+      context.fillStyle = "rgba(255,0,0,0.01)"; // RGBA
+      context.fillFlood(50, 75, 25);
+      $('#player').css({
+         'background-size' : "34px;",
+         'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
+      });
+   };
+   image.src="assets/newbird.png";
+}
+
+
+
+
+
+
 $(document).ready(function() {
    if(window.location.search == "?debug")
       debugmode = true;
    if(window.location.search == "?easy")
       pipeheight = 200;
+
+   //stan: load our new bird
+   loadBirdImage()
 
    //get the highscore
    var savedscore = getCookie("highscore");
