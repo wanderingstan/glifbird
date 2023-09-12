@@ -58,10 +58,35 @@ function loadBirdImage(birdImageUrl) {
    };
    console.log(`Loading bird from ${birdImageUrl}`)
    image.crossOrigin = `Anonymous`;
-   image.src = birdImageUrl;
+   if (birdImageUrl)
+      image.src = birdImageUrl;
+   else
+      image.src = `./assets/bird.png`
 
 }
 
+
+function loadSkyImage(skyImageUrl) {
+
+   // var canvas = document.createElement("canvas");
+   var canvas = document.getElementById("sky-canvas");
+   var context = canvas.getContext('2d');
+   var image = new Image();
+   image.onload = function() {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      $('#sky').css({
+         'background-size' : "34px;",
+         'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
+      });      
+   };
+   console.log(`Loading sky from ${skyImageUrl}`)
+   image.crossOrigin = `Anonymous`;
+   if (skyImageUrl)
+      image.src = skyImageUrl;
+   else
+      image.src = `./assets/sky.png`
+
+}
 
 
 $(document).ready(function() {
@@ -77,8 +102,9 @@ $(document).ready(function() {
    var backgroundImage = searchParams.get("background-image")
 
 
-   //stan: load our new bird
+   //stan: load our new bird and sky
    loadBirdImage(birdImageUrl)
+   loadSkyImage(backgroundImage)
 
    //get the highscore
    var savedscore = getCookie("highscore");
