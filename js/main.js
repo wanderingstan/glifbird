@@ -90,16 +90,17 @@ function loadSkyImage(skyImageUrl) {
 
 
 $(document).ready(function() {
-   if(window.location.search == "?debug")
-      debugmode = true;
-   if(window.location.search == "?easy")
-      pipeheight = 200;
 
 
    //parse glif images passed in
    var searchParams = new URLSearchParams(window.location.search);
    var birdImageUrl = searchParams.get("animal-image")
    var backgroundImage = searchParams.get("background-image")
+
+   if(searchParams.get("debug") != null)
+      debugmode = true;
+   if(searchParams.get("easy") != null)
+      pipeheight = 200;
 
 
    //stan: load our new bird and sky
