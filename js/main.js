@@ -39,13 +39,13 @@ var loopPipeloop;
 
 
 
-function loadBirdImage() {
+function loadBirdImage(birdImageUrl) {
    // var canvas = document.createElement("canvas");
-   var canvas=document.getElementById("bird-canvas");
+   var canvas = document.getElementById("bird-canvas");
 
    var context = canvas.getContext('2d');
    var image = new Image();
-   image.onload=function() {
+   image.onload = function() {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
       //var color = { r: 255, g: 0, b: 0, a: 255 };
@@ -56,11 +56,11 @@ function loadBirdImage() {
          'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
       });
    };
-   image.src="assets/newbird.png";
+   console.log(`Loading bird from ${birdImageUrl}`)
+   image.crossOrigin = `Anonymous`;
+   image.src = birdImageUrl;
+
 }
-
-
-
 
 
 
@@ -70,8 +70,15 @@ $(document).ready(function() {
    if(window.location.search == "?easy")
       pipeheight = 200;
 
+
+   //parse glif images passed in
+   var searchParams = new URLSearchParams(window.location.search);
+   var birdImageUrl = searchParams.get("animal-image")
+   var backgroundImage = searchParams.get("background-image")
+
+
    //stan: load our new bird
-   loadBirdImage()
+   loadBirdImage(birdImageUrl)
 
    //get the highscore
    var savedscore = getCookie("highscore");
