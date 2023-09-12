@@ -61,7 +61,7 @@ function loadBirdImage(birdImageUrl) {
    if (birdImageUrl)
       image.src = birdImageUrl;
    else
-      image.src = `./assets/bird.png`
+      image.src = `./assets/bird2.png`
 
 }
 
@@ -84,7 +84,7 @@ function loadSkyImage(skyImageUrl) {
    if (skyImageUrl)
       image.src = skyImageUrl;
    else
-      image.src = `./assets/sky.png`
+      image.src = `./assets/sky2.png`
 
 }
 
