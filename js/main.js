@@ -89,8 +89,9 @@ function loadSkyImage(skyImageUrl) {
 }
 
 
-$(document).ready(function() {
 
+
+$(document).ready(function() {
 
    //parse glif images passed in
    var searchParams = new URLSearchParams(window.location.search);
@@ -459,11 +460,16 @@ function showScore()
    //show the scoreboard
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
    $("#replay").css({ y: '40px', opacity: 0 });
+   $("#share").css({ y: '40px', opacity: 0 });
    $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
       //When the animation is done, animate in the replay button and SWOOSH!
       soundSwoosh.stop();
       soundSwoosh.play();
       $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
+
+      if (navigator.canShare()) {
+        $("#share").transition({ y: '0px', opacity: 1}, 800, 'ease');
+      }
 
       //also animate in the MEDAL! WOO!
       if(wonmedal)
@@ -476,6 +482,22 @@ function showScore()
    //make the replay button clickable
    replayclickable = true;
 }
+
+
+$("#share").click(async function() {
+   const gameName = "Gliffy Bird";
+   const message = "Sample game from glif";
+   try {
+      await navigator.share({
+          title: gameName,
+          text: message,
+          url: `${window.location}`
+      });
+      console.log("Shared!");
+   } catch (err) {
+      window.alert("Did not share." + err.toString());
+   }
+});
 
 $("#replay").click(function() {
    //make sure we can only click once

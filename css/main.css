@@ -274,6 +274,22 @@ Screen - Game
    cursor: pointer;
 }
 
+#share
+{
+   opacity: 0;
+   position: absolute;
+   top: 260px;
+   left: 82px;
+   height: 115px;
+   width: 70px;
+   cursor: pointer;
+}
+
+#share img {
+   width: 100%;
+   height: 100%;
+}
+
 .boundingbox
 {
    position: absolute;
