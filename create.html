@@ -1,0 +1,97 @@
+<html>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.transit.min.js"></script>
+<script>
+
+function isValidHttpUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
+function createGame() {
+
+    $(document).ready(function() {
+
+      const glifId = (document.getElementById("animal").value == "test" ?
+       "clmi665rh0000l30fclfj4smp" :  // TEST GLIF
+       "clmhtbbe70013l40g5knjc4f8" // REAL GLIF
+      )
+      const data = {
+        id: glifId,
+        input: {
+          animal: document.getElementById("animal").value,
+          background: document.getElementById("background").value
+        }
+      };
+      console.log("Loading glif");
+      document.getElementById("spinner").style.display = "block";
+      document.getElementById("createGameButton").style.display = "none";
+      $.ajax({
+        url: "https://simple-api.glif.app",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(response) {
+            console.log({response});
+            output = JSON.parse(response.output);
+            console.log({output});
+            if (!isValidHttpUrl(output.backgroundImageUrl) || !isValidHttpUrl(output.animalImageUrl)) {
+                console.error("Got invalid URLs returned.");
+                return;
+            }
+            var gameUrl = `index.html?background-image=${output.backgroundImageUrl}&animal-image=${output.animalImageUrl}`;
+            console.log(gameUrl);
+            document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
+            // window.location = gameUrl;
+            document.getElementById("spinner").style.display = "none";
+        },
+        error: function(error) {
+          console.error('Error:', error);
+          document.getElementById("spinner").style.display = "none";
+        }
+      });
+    });
+
+}
+</script>
+
+<style>
+    #spinner {
+        display: none;
+        width: 32px;
+    }
+</style>
+
+<body>
+
+<div>
+    <label for="animal">Character or animal:</label> <input type="text" name="animal" id="animal" value="test"/>
+</div>
+
+<div>
+    <label for="background">Description of background</label>
+    <textarea name="background" id="background">Arctic expanse with icebergs and blue sky.</textarea>
+</div>
+
+<button id="createGameButton" onclick="createGame()">Create Game</button>
+
+<div>
+    <img id="spinner" src="./assets/spinner.gif"/>
+</div>
+
+<div id="gamelink"></div>
+
+
+</body>
+
+
+</html>
