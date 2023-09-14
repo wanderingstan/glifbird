@@ -63,11 +63,43 @@
                 this.sound.load();
                 return this;
             };
-            this.play = function() {
+            // this.play = function() {
+            //     if (!supported) {
+            //         return this;
+            //     }
+            //     // this.sound.play().catch(function(e) {});
+
+
+            //     var playPromise = this.sound.play();
+
+            //     // In browsers that don’t yet support this functionality,
+            //     // playPromise won’t be defined.
+            //     if (playPromise !== undefined) {
+            //         playPromise.then(function() {
+            //         // Automatic playback started!
+            //             console.log("played sound");
+            //         }).catch(function(error) {
+            //         // Automatic playback failed.
+            //         // Show a UI element to let the user manually start playback.
+            //             console.log("could not play sound");
+            //             console.error(error);
+            //         });
+            //     }
+
+
+
+            //     return this;
+            // };
+            this.play = async function() {
                 if (!supported) {
                     return this;
                 }
-                this.sound.play().catch(function() {});
+                try {
+                    await this.sound.play()
+                } catch (error) {
+                        console.error(error);
+                }
+
                 return this;
             };
             this.togglePlay = function() {
@@ -494,6 +526,9 @@
                 source.addEventListener("error", function(e) {
                     self.trigger("sourceerror", e);
                 });
+
+                this.sound.src=src; // STAN
+
                 return source;
             };
             function timerangeToArray(timeRange) {

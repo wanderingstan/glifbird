@@ -25,25 +25,31 @@ var pipes = new Array();
 var replayclickable = false;
 
 //sounds
+
+// buzz.defaults.preload = true;
+// buzz.defaults.autoplay = true;
+
+function iOS() {
+  return [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ].includes(navigator.platform)
+  // iPad on iOS 13 detection
+  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}
+
+
 var volume = 30;
-var soundJump = new buzz.sound("assets/sounds/sfx_wing.ogg");
-var soundScore = new buzz.sound("assets/sounds/sfx_point.ogg");
-var soundHit = new buzz.sound("assets/sounds/sfx_hit.ogg");
-var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
-var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
+var soundJump = iOS() ? null : new buzz.sound("assets/sounds/sfx_wing.wav"); // iOS sucks on rapid sounds
+var soundScore = new buzz.sound("assets/sounds/sfx_point.wav");
+var soundHit = new buzz.sound("assets/sounds/sfx_hit.wav");
+var soundDie = new buzz.sound("assets/sounds/sfx_die.wav");
+var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.wav");
 
-//stan: patch for newer ios
-soundJump.sound.setAttribute('playsinline', 'playsinline');
-soundScore.sound.setAttribute('playsinline', 'playsinline');
-soundHit.sound.setAttribute('playsinline', 'playsinline');
-soundDie.sound.setAttribute('playsinline', 'playsinline');
-soundSwoosh.sound.setAttribute('playsinline', 'playsinline');
-
-soundJump.sound.setAttribute('autoplay', true);
-soundScore.sound.setAttribute('autoplay', true);
-soundHit.sound.setAttribute('autoplay', true);
-soundDie.sound.setAttribute('autoplay', true);
-soundSwoosh.sound.setAttribute('autoplay', true);
 
 buzz.all().setVolume(volume);
 
