@@ -214,6 +214,16 @@ Screen - Game
    -webkit-text-stroke: 2px black;
 }
 
+#instructions {
+   text-shadow: 1px 1px 2px black;
+}
+
+#gamesummary {
+   margin-top: 6px;
+   text-shadow: 1px 1px 2px black;
+   margin-bottom: 6px;
+}
+
 #startscreen
 {
    position: absolute;

@@ -58,19 +58,17 @@ var loopGameloop;
 var loopPipeloop;
 
 
-
 function loadBirdImage(birdImageUrl) {
    // var canvas = document.createElement("canvas");
    var canvas = document.getElementById("bird-canvas");
-
    var context = canvas.getContext('2d');
    var image = new Image();
    image.onload = function() {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
       //var color = { r: 255, g: 0, b: 0, a: 255 };
-      context.fillStyle = "rgba(255,0,0,0.01)"; // RGBA
-      context.fillFlood(50, 75, 25);
+      context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
+      context.fillFlood(50, 75, 25); // Kindofa guess as to start in top left corner and floodfill from there
       $('#player').css({
          'background-size' : "34px;",
          'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
@@ -118,8 +116,10 @@ $(document).ready(function() {
    var birdImageUrl = searchParams.get("animal-image")
    var backgroundImage = searchParams.get("background-image")
    var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
+   var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
 
    $("#gamename").text(gamename);
+   $("#gamesummary").text(gamesummary);
 
    if (!birdImageUrl || !backgroundImage) {
       // Go to create if nothing specified
