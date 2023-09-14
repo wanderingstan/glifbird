@@ -26,13 +26,13 @@
             "Cityscape of giant metropolis with skyscrapers at sunset",
             "Happy green fields with a big blue sky and happy sun",
             "Mad max desert hellscape",
-            "Taylor Swift concert scene",
+            "Taylor Swift concert",
             "World War I war zone",
             "Jungle expanse with lush trees, vines, and thick vegetation",
             "Crazy landscape like from a salvador dali painting",
-            "Scene from a windows desktop wallpaper",
-            "Scene from outer space with asteroids, planets, and a shooting star",
-            "Underwater scene with coral reef, bubbles, and some fish"
+            "A windows desktop wallpaper",
+            "Outer space with asteroids, planets, and a shooting star",
+            "Underwater with coral reef, bubbles, and some fish"
         ];
         const random = Math.floor(Math.random() * backgroundArray.length);
         return backgroundArray[random];
@@ -547,6 +547,7 @@
     function setRandoms() {
         document.getElementById('animal').value = randomAnimal()
         document.getElementById('background').value = randomBackground()
+        document.getElementById('gamename').value = "Flappy " + document.getElementById('animal').value;
     }
 
     function isValidHttpUrl(string) {
@@ -567,7 +568,8 @@
 
           const glifId = (document.getElementById("animal").value == "test" ?
            "clmi665rh0000l30fclfj4smp" :  // TEST GLIF
-           "clmhtbbe70013l40g5knjc4f8" // REAL GLIF
+           // "clmhtbbe70013l40g5knjc4f8" // REAL GLIF
+           document.getElementById("forglifid").value
           )
           const data = {
             id: glifId,
@@ -591,9 +593,14 @@
                 console.log({output});
                 if (!isValidHttpUrl(output.backgroundImageUrl) || !isValidHttpUrl(output.animalImageUrl)) {
                     console.error("Got invalid URLs returned.");
+                    window.alert(`Got invalid URLs returned from GLIF: ${output}`)
                     return;
                 }
-                var gameUrl = `index.html?background-image=${output.backgroundImageUrl}&animal-image=${output.animalImageUrl}` + (document.getElementById("easy").checked ? "&easy" : "");
+                var gameUrl = (`index.html` +
+                    `?background-image=${output.backgroundImageUrl}` +
+                    `&animal-image=${output.animalImageUrl}` +
+                    `&gamename=${encodeURIComponent(document.getElementById("gamename").value)}` +
+                    (document.getElementById("easy").checked ? "&easy" : ""));
                 console.log(gameUrl);
                 // document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
                 window.location = gameUrl;
@@ -602,6 +609,8 @@
             error: function(error) {
               console.error('Error:', error);
               document.getElementById("spinner").style.display = "none";
+              window.alert(`Got an error: ${error}`);
+
             }
           });
         });
@@ -619,12 +628,12 @@
 
         input, textarea {
             font-size: 100%;
-            border-color: rgb(190, 242, 100);
             color: rgb(120, 113, 108);
             filter: drop-shadow(rgba(0, 0, 0, 0.05) 0px 1px 1px);
             font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             border-width: 3px;
             border-radius: 30px;
+            border: px solid rgb(190, 242, 100);
         }
 
         #spinner {
@@ -647,11 +656,24 @@
             font-size: 100%;
             border-radius: 30px;
             padding: 10px;
+            outline: inherit;
         }
 
         #createGameButton {
             background-color: rgb(54, 83, 20);
             color: white;
+        }
+
+
+        #forglifid {
+            font-size: 50%;
+        }
+        #glifid {
+            font-size: 50%;
+            font-family: monospace;
+        }
+        #example {
+            font-size: 50%;
         }
     </style>
 </head>
@@ -663,10 +685,17 @@
     <div id="form">
         <h1>Create Glif Game</h1>
 
+
+
         <div>
             <button id="randomButton" onclick="setRandoms()">Random</button>
         </div>
         <br/>
+
+        <div>
+            <label for="gamename">Game Name:</label><br/>
+            <input type="text" name="gamename" id="gamename" value="Game"/>
+        </div>
 
         <div>
             <label for="animal">Character or animal:</label><br/>
@@ -686,6 +715,13 @@
 
         <br>
         <button id="createGameButton" onclick="createGame()">Create Game</button>
+        <br/>
+        <br/>
+        <div>
+            <label id="forglifid" for="glifid">Glif ID: (Advanced)</label><br/>
+            <input type="text" name="glifid" id="glifid" value="clmhtbbe70013l40g5knjc4f8"/>
+            <div id="example"><a target="_blank" href="https://glif.app/@wanderingstan/glifs/clmhtbbe70013l40g5knjc4f8">Example glif</a></div>
+        </div>
     </div>
 
     <div id="spinner">

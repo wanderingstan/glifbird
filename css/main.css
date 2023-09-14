@@ -208,6 +208,24 @@ Screen - Game
    background-repeat: no-repeat;
 }
 
+#gamename {
+   font-size: 40px;
+   font-weight: bold;
+   -webkit-text-stroke: 2px black;
+}
+
+#startscreen
+{
+   position: absolute;
+   top: 75px;
+   left: 65px;
+   width: 188px;
+/*   width: 100%;*/
+   height: 170px;
+   z-index: 999;
+   text-align: center;
+}
+
 #scoreboard
 {
    position: absolute;

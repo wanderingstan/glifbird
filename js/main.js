@@ -117,6 +117,9 @@ $(document).ready(function() {
    var searchParams = new URLSearchParams(window.location.search);
    var birdImageUrl = searchParams.get("animal-image")
    var backgroundImage = searchParams.get("background-image")
+   var gamename = searchParams.get("gamename")
+
+   $("#gamename").text(gamename);
 
    if (!birdImageUrl || !backgroundImage) {
       // Go to create if nothing specified
@@ -147,6 +150,7 @@ $(document).ready(function() {
 $(document).on('click', function(evt) {
    if (!gameIsRunning) {
       gameIsRunning = true;
+      $("#startscreen").hide();
       showSplash();
    }
 });
