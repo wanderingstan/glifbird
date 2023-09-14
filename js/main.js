@@ -117,7 +117,7 @@ $(document).ready(function() {
    var searchParams = new URLSearchParams(window.location.search);
    var birdImageUrl = searchParams.get("animal-image")
    var backgroundImage = searchParams.get("background-image")
-   var gamename = searchParams.get("gamename")
+   var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
 
    $("#gamename").text(gamename);
 
