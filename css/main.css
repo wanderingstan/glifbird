@@ -287,8 +287,8 @@ Screen - Game
    opacity: 0;
    top: 205px;
    left: 61px;
-   height: 115px;
-   width: 70px;
+   height: 70px;
+   width: 115px;
    cursor: pointer;
 }
 
@@ -296,17 +296,13 @@ Screen - Game
 {
    opacity: 0;
    position: absolute;
-   top: 260px;
-   left: 82px;
-   height: 115px;
-   width: 70px;
+   top: 280px;
+   left: 61px;
+   height: 70px;
+   width: 115px;
    cursor: pointer;
 }
 
-#share img {
-   width: 100%;
-   height: 100%;
-}
 
 .boundingbox
 {
