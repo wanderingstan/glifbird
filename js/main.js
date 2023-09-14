@@ -31,6 +31,20 @@ var soundScore = new buzz.sound("assets/sounds/sfx_point.ogg");
 var soundHit = new buzz.sound("assets/sounds/sfx_hit.ogg");
 var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
+
+//stan: patch for newer ios
+soundJump.sound.setAttribute('playsinline', 'playsinline');
+soundScore.sound.setAttribute('playsinline', 'playsinline');
+soundHit.sound.setAttribute('playsinline', 'playsinline');
+soundDie.sound.setAttribute('playsinline', 'playsinline');
+soundSwoosh.sound.setAttribute('playsinline', 'playsinline');
+
+soundJump.sound.setAttribute('autoplay', true);
+soundScore.sound.setAttribute('autoplay', true);
+soundHit.sound.setAttribute('autoplay', true);
+soundDie.sound.setAttribute('autoplay', true);
+soundSwoosh.sound.setAttribute('autoplay', true);
+
 buzz.all().setVolume(volume);
 
 //loops
@@ -89,7 +103,7 @@ function loadSkyImage(skyImageUrl) {
 }
 
 
-
+var gameIsRunning = false;
 
 $(document).ready(function() {
 
@@ -97,6 +111,11 @@ $(document).ready(function() {
    var searchParams = new URLSearchParams(window.location.search);
    var birdImageUrl = searchParams.get("animal-image")
    var backgroundImage = searchParams.get("background-image")
+
+   if (!birdImageUrl || !backgroundImage) {
+      // Go to create if nothing specified
+      window.location = "create.html"
+   }
 
    if(searchParams.get("debug") != null)
       debugmode = true;
@@ -114,7 +133,16 @@ $(document).ready(function() {
       highscore = parseInt(savedscore);
 
    //start with the splash screen
-   showSplash();
+   // showSplash();
+});
+
+
+// Wait for click at very start for sound
+$(document).on('click', function(evt) {
+   if (!gameIsRunning) {
+      gameIsRunning = true;
+      showSplash();
+   }
 });
 
 function getCookie(cname)
@@ -467,8 +495,14 @@ function showScore()
       soundSwoosh.play();
       $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
 
-      if (navigator.canShare()) {
-        $("#share").transition({ y: '0px', opacity: 1}, 800, 'ease');
+      if (navigator.canShare && navigator.canShare({
+          title: "gameName",
+          text: "message",
+          url: `${window.location}`})
+      ) {
+        $("#share").transition({ y: '0px', opacity: 1}, 1200, 'ease');
+      } else {
+         $("#share").hide();
       }
 
       //also animate in the MEDAL! WOO!
@@ -485,6 +519,7 @@ function showScore()
 
 
 $("#share").click(async function() {
+   console.log("share")
    const gameName = "Gliffy Bird";
    const message = "Sample game from glif";
    try {
@@ -500,6 +535,7 @@ $("#share").click(async function() {
 });
 
 $("#replay").click(function() {
+   console.log("replay")
    //make sure we can only click once
    if(!replayclickable)
       return;
