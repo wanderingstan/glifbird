@@ -8,6 +8,11 @@ Describe the character and background, and get a flappy bird game with images cr
 
 Uses the browser *share* feature so players can share their creations on discord, whatsapp, text, etc...
 
+Sharing works best in Safari, but sound sucks.
+
+Sound works best in Chrome, but you have to [enable sharing](https://stackoverflow.com/a/74272516).
+
+
 ## Game creator demo
 
 [Create Gliffy Bird Game](https://wanderingstan.github.io/glifbird/create.html)
