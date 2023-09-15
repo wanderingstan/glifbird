@@ -6,6 +6,7 @@ An experiment in using user-selected AI-generated assets in a simple flappy-bird
 
 Describe the character and background, and get a flappy bird game with images created for it.
 
+Uses the browser *share* feature so players can share their creations on discord, whatsapp, text, etc...
 
 ## Game creator demo
 
