@@ -7,6 +7,7 @@
       <meta name="description" content="play gliffy bird. a remake of popular game flappy bird built in html/css/js powered by the AI of glif.app" />
       <meta name="keywords" content="flappybird,flappy,bird,floppybird,floppy,html,html5,css,css3,js,javascript,jquery,github,nebez,briefkani,nebezb,open,source,opensource" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <meta name="apple-mobile-web-app-capable" content="yes"> <!-- request fullscreen -->
 
 
       <!-- Open Graph tags -->
@@ -58,6 +59,7 @@
       </div>
       <div id="footer">
          <a href="https://github.com/wanderingstan/glifbird">view github project</a>
+         <a href="https://github.com/nebez/floppybird">based on floppy bird by nebez</a>
       </div>
       <div class="boundingbox" id="playerbox"></div>
       <div class="boundingbox" id="pipebox"></div>
@@ -69,20 +71,6 @@
       <script src="js/floodfill.min.js"></script>
       <script src="js/main.js"></script>
 
-      <script>
-      function inIframe() {
-          try {
-              return window.self !== window.top;
-          } catch (e) {
-              return true;
-          }
-      }
-      if (!inIframe() && window.location.hostname == 'nebezb.com') {
-         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-         ga('create', 'UA-48047334-1', 'auto');
-         ga('send', 'pageview');
-      }
-      </script>
       <script async src='https://www.google-analytics.com/analytics.js'></script>
    </body>
 </html>
