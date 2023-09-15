@@ -32,6 +32,9 @@
             "Crazy landscape like from a salvador dali painting",
             "A windows desktop wallpaper",
             "Outer space with asteroids, planets, and a shooting star",
+            "Coffee roastery",
+            "Mexican mountain landscape with aztec pyramids",
+            "Outer space with asteroids, planets, and a shooting star",
             "Underwater with coral reef, bubbles, and some fish"
         ];
         const random = Math.floor(Math.random() * backgroundArray.length);
@@ -612,15 +615,71 @@
                     window.alert(`Got invalid URLs returned from GLIF: ${output}`)
                     return;
                 }
+
+                var backgroundImage = output.backgroundImageUrl;
+                var animalImage = output.animalImageUrl;
+                var gameName = document.getElementById("gamename").value;
+                var gameSummary = output.gameSummary;
+
                 var gameUrl = (`index.html` +
-                    `?background-image=${output.backgroundImageUrl}` +
-                    `&animal-image=${output.animalImageUrl}` +
-                    `&gamename=${encodeURIComponent(document.getElementById("gamename").value)}` +
-                    `&gamesummary=${encodeURIComponent(output.gameSummary)}` +
+                    `?background-image=${backgroundImage}` +
+                    `&animal-image=${animalImage}` +
+                    `&gamename=${encodeURIComponent(gameName)}` +
+                    `&gamesummary=${encodeURIComponent(gameSummary)}` +
                     (document.getElementById("easy").checked ? "&easy" : ""));
                 console.log(gameUrl);
-                // document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
-                window.location = gameUrl;
+                document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
+                // window.location = gameUrl;
+
+                // Record our game on server
+                $.ajax({
+                    type: "POST",
+                    // processData: false,
+                    // contentType: "application/x-www-form-urlencoded",
+                    // headers: {"Access-Control-Allow-Origin":"*"},
+                    url: "https://wanderingstan.com/glif/glif_game_record.php",
+                    data: {
+                        'background-image': backgroundImage,
+                        'animal-image': animalImage,
+                        'gamename': gameName,
+                        'gamesummary': gameSummary
+                    },
+                    success: function (response) {
+                        // Handle the success response from the server
+                        console.log("POST request successful:", response);
+                        window.location = gameUrl
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors
+                        console.error("POST request failed:", error);
+                        window.location = gameUrl
+                    }
+                }).fail(function (jqXHR, exception) { 
+                    var msg = '';
+                    if (jqXHR.status === '(failed)net::ERR_INTERNET_DISCONNECTED') {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText; 
+                    }
+                    if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 413) {
+                            msg = 'Image size is too large.'; 
+                    }  else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]'; 
+                    } else if (jqXHR.status == 405) {
+                            msg = 'Image size is too large.'; 
+                    } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].'; 
+                    } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.'; 
+                    } else if (exception === 'timeout') {
+                            msg = 'Time out error.'; 
+                    } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.'; 
+                    } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText; 
+                    }
+                    console.log(msg);
+                });
                 document.getElementById("spinner").style.display = "none";
             },
             error: function(xhr, status, error) {
