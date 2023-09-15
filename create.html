@@ -544,6 +544,22 @@
         return animalArray[random];
     }
 
+var glifid = "clmhtbbe70013l40g5knjc4f8"
+var gamename = "Create Glif Game"
+
+    function onLoad() {
+        var searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.get("glif-id")) {
+            glifid = searchParams.get("glif-id")
+        }
+        if (searchParams.get("gamename")) {            
+            gamename = searchParams.get("gamename")
+        }
+        document.getElementById("title").innerHTML = gamename;
+        document.getElementById("glifid").innerHTML = glifid
+        setRandoms();
+    }
+
     function setRandoms() {
         document.getElementById('animal').value = randomAnimal()
         document.getElementById('background').value = randomBackground()
@@ -678,12 +694,12 @@
     </style>
 </head>
 
-<body onload="setRandoms()">
+<body onload="onLoad()">
 
 <div id="main">
 
     <div id="form">
-        <h1>Create Glif Game</h1>
+        <h1 id="title">Create Glif Game</h1>
 
 
 
