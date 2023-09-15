@@ -1,4 +1,4 @@
-<img src="screencap.png" align="right" width="250">
+<img src="screencap.gif" align="right" width="250">
 
 # play gliffy bird
 
