@@ -616,6 +616,7 @@
                     `?background-image=${output.backgroundImageUrl}` +
                     `&animal-image=${output.animalImageUrl}` +
                     `&gamename=${encodeURIComponent(document.getElementById("gamename").value)}` +
+                    `&gamesummary=${encodeURIComponent(output.gameSummary)}` +
                     (document.getElementById("easy").checked ? "&easy" : ""));
                 console.log(gameUrl);
                 // document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
