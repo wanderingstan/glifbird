@@ -499,11 +499,13 @@ function showScore()
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
    $("#replay").css({ y: '40px', opacity: 0 });
    $("#share").css({ y: '40px', opacity: 0 });
+   $("#create").css({ y: '40px', opacity: 0 });
    $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
       //When the animation is done, animate in the replay button and SWOOSH!
       soundSwoosh.stop();
       soundSwoosh.play();
       $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
+      $("#create").transition({ y: '0px', opacity: 1}, 1400, 'ease');
 
       if (navigator.canShare && navigator.canShare({
           title: "gameName",
@@ -527,6 +529,9 @@ function showScore()
    replayclickable = true;
 }
 
+$("#create").click(function() {
+   window.location = "./create.html";
+})
 
 $("#share").click(async function() {
    console.log("share")
