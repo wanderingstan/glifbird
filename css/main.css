@@ -335,15 +335,21 @@ Screen - Game
 }
 
 #create {
-      position: absolute;
+    position: absolute;
     top: 383px;
-     left: 69px;
-      height: 70px;
-      width: 115px;
-      cursor: pointer;    
-      font-size: 16px;
-      text-shadow: 1px 1px 2px black;     
-}
+    left: 69px;
+    height: 46px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 16px;
+    color: black;
+    /* text-shadow: 1px 1px 2px black; */
+    padding: 4px;
+    border: 2px solid black;
+    border-radius: 6px;
+    background-color: #ededed;
+    text-align: center;
+ }
 
 
 .boundingbox
