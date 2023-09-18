@@ -17,6 +17,25 @@
 
 @-webkit-keyframes animSky {
    0% { background-position: 0px 100%; }
+   100% { background-position: -640px 100%; }
+}
+@-moz-keyframes animSky {
+   0% { background-position: 0px 100%; }
+   100% { background-position: -640px 100%; }
+}
+@-o-keyframes animSky {
+   0% { background-position: 0px 100%; }
+   100% { background-position: -640px 100%; }
+}
+@keyframes animSky {
+   0% { background-position: 0px 100%; }
+   100% { background-position: -640px 100%; }
+}
+
+
+/*
+@-webkit-keyframes animSky {
+   0% { background-position: 0px 100%; }
    100% { background-position: -1536px 100%; }
 }
 @-moz-keyframes animSky {
@@ -31,6 +50,7 @@
    0% { background-position: 0px 100%; }
    100% { background-position: -1536px 100%; }
 }
+*/
 
 @-webkit-keyframes animBird {
    from { background-position: 0px 0px; }
