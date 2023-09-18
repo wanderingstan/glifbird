@@ -40,7 +40,15 @@
             "The grand canyon at sunset",
             "Beach with waves crashing and fish jumping, sun high in the sky.",
             "Ghanian village with little houses, at noon.",
-            "Ted Lasso locker room after a game."
+            "Ted Lasso locker room after a game.",
+            "The shire from Lord of the Rings",
+            "Los Angeles in the future like in Blade Runner",
+            "The world of Paw Patrol",
+            "Moon landscape made out of LEGO",
+            "A 2D scene of minimalist, geometric illusions. With high contrast graphics and symmetrical obstacles.",
+            "The Playa at Burning Man with the Man burning in the background.",
+            "Trendy Berlin neighborhood",
+            "The insides of a human body, showing organs, veins, glands, etc"
         ];
         const random = Math.floor(Math.random() * backgroundArray.length);
         return backgroundArray[random];
@@ -648,7 +656,8 @@
                         'background-image': backgroundImage,
                         'animal-image': animalImage,
                         'gamename': gameName,
-                        'gamesummary': gameSummary
+                        'gamesummary': gameSummary,
+                        'gameUrl' : gameUrl
                     },
                     success: function (response) {
                         // Handle the success response from the server
