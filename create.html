@@ -628,8 +628,8 @@
                 var gameSummary = output.gameSummary;
 
                 var gameUrl = (`index.html` +
-                    `?background-image=${backgroundImage}` +
-                    `&animal-image=${animalImage}` +
+                    `?background-image=${encodeURIComponent(backgroundImage)}` +
+                    `&animal-image=${encodeURIComponent(animalImage)}` +
                     `&gamename=${encodeURIComponent(gameName)}` +
                     `&gamesummary=${encodeURIComponent(gameSummary)}` +
                     (document.getElementById("easy").checked ? "&easy" : ""));
