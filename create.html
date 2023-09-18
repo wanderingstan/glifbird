@@ -36,7 +36,7 @@
             "Mexican mountain landscape with aztec pyramids",
             "Outer space with asteroids, planets, and a shooting star",
             "Underwater with coral reef, bubbles, and some fish",
-            "Bamboo forest",
+            "Bamboo forest in China with stunning rock formations in the background",
             "The grand canyon at sunset",
             "Beach with waves crashing and fish jumping, sun high in the sky.",
             "Ghanian village with little houses, at noon.",
@@ -715,6 +715,7 @@
         body {
             font-size: 150%;
             font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",sans-serif;
+            background-color: #4ec0ca;
         }
 
         input, textarea {
@@ -729,6 +730,7 @@
 
         #spinner {
             display: none;
+            text-align: center;
         }
 
         #spinner img{
@@ -748,6 +750,9 @@
             border-radius: 30px;
             padding: 10px;
             outline: inherit;
+            margin: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
         #createGameButton {
@@ -766,6 +771,11 @@
         #example {
             font-size: 50%;
         }
+
+        h1 {
+            font-size: 1.3em;
+            margin-block-end: 0.2em;
+        }
     </style>
 </head>
 
@@ -779,9 +789,8 @@
 
 
         <div>
-            <button id="randomButton" onclick="setRandoms()">Random</button>
+            <button id="randomButton" onclick="setRandoms()">Randomize</button>
         </div>
-        <br/>
 
         <div>
             <label for="gamename">Game Name:</label><br/>
@@ -789,7 +798,7 @@
         </div>
 
         <div>
-            <label for="animal">Character or animal:</label><br/>
+            <label for="animal">Character, animal or <a href="https://glif.app/glifmoji">&lt;Glifmoji&gt;</a>:</label><br/>
             <input type="text" name="animal" id="animal" value="test"/>
         </div>
 
@@ -803,8 +812,6 @@
         </div>
 
 
-
-        <br>
         <button id="createGameButton" onclick="createGame()">Create Game</button>
         <br/>
         <br/>
