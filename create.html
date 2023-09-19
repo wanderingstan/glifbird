@@ -19,6 +19,86 @@
     <script src="js/jquery.transit.min.js"></script>
     <script>
 
+    // URL of the JSONL file
+    const jsonlUrl = "https://wanderingstan.com/glif/games.jsonl";
+
+    // Number of random lines to select
+    const numRandomLines = 5;
+
+    // Function to fetch and process the JSONL data
+    async function fetchAndProcessJSONL() {
+      try {
+        // Fetch the JSONL file
+        const response = await fetch(jsonlUrl);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch the JSONL file.");
+        }
+
+        // Read the JSONL data line by line
+        const jsonlText = await response.text();
+        const lines = jsonlText.split("\n");
+
+        // Shuffle the lines randomly
+        const shuffledLines = shuffleArray(lines);
+
+        // Process the first 5 random lines as JSON objects
+        for (let i = 0; i < numRandomLines && i < shuffledLines.length; i++) {
+          try {
+            const line = shuffledLines[i].trim();
+            if (line) {
+              const jsonObj = JSON.parse(line);
+              const imageUrl = jsonObj.animalImage;
+              const backgroundImage = jsonObj.backgroundImage;
+              const gameName = jsonObj.gamename;
+              const gameSummary = jsonObj.gamesummary;
+
+                const gameUrl = (`index.html` +
+                    `?background-image=${encodeURIComponent(backgroundImage)}` +
+                    `&animal-image=${encodeURIComponent(imageUrl)}` +
+                    `&gamename=${encodeURIComponent(gameName)}` +
+                    `&gamesummary=${encodeURIComponent(gameSummary)}` +
+                    (document.getElementById("easy").checked ? "&easy" : ""));
+
+              // Create a <div> element
+              const div = document.createElement("div");
+              div.classList.add("game-button");
+              div.onclick = function(ev) {window.location = gameUrl;}
+
+              // Create an image element and set its source
+              const img = document.createElement("img");
+              img.src = imageUrl;
+
+              // Create a paragraph element for the game name
+              const p = document.createElement("p");
+              p.textContent = gameName;
+
+              // Append the image and text to the <div>
+              div.appendChild(img);
+              div.appendChild(p);
+
+              // Append the <div> to the document body
+              document.getElementById("old-games").appendChild(div);
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    }
+
+    // Helper function to shuffle an array randomly
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+
 
     function randomBackground() {
         backgroundArray = [
@@ -575,6 +655,8 @@
         document.getElementById("title").innerHTML = gamename;
         document.getElementById("glifid").innerHTML = glifid
         setRandoms();
+        fetchAndProcessJSONL();
+
     }
 
     function setRandoms() {
@@ -652,7 +734,7 @@
                     // processData: false,
                     // contentType: "application/x-www-form-urlencoded",
                     // headers: {"Access-Control-Allow-Origin":"*"},
-                    url: "https://wanderingstan.com/glif/glif_game_record.php",
+                    url: "https://wanderingstan.com/glif/glif_game_record_jsonl.php",
                     data: {
                         'background-image': backgroundImage,
                         'animal-image': animalImage,
@@ -777,6 +859,23 @@
             font-size: 1.3em;
             margin-block-end: 0.2em;
         }
+
+
+
+        .game-button {
+            width: 70px;
+            height: 120px;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;            
+        }
+        .game-button p {
+            font-size: small;
+            margin-top: 0px;
+        }   
+        .game-button img {
+            width: 70px;
+        }             
     </style>
 </head>
 
@@ -788,6 +887,8 @@
         <h1 id="title">Create Glif Game</h1>
 
 
+        <div id="old-games">
+        </div>
 
         <div>
             <button id="randomButton" onclick="setRandoms()">Randomize</button>
