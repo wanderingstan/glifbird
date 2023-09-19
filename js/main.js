@@ -68,7 +68,7 @@ function loadBirdImage(birdImageUrl) {
       // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
       //var color = { r: 255, g: 0, b: 0, a: 255 };
       context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
-      context.fillFlood(50, 75, 100); // Kindofa guess as to start in top left corner and floodfill from there
+      context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
       $('#player').css({
          'background-size' : "34px;",
          'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
