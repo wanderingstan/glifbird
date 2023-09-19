@@ -613,6 +613,7 @@
           };
           console.log("Loading glif");
           document.getElementById("spinner").style.display = "block";
+          document.getElementById("create-game").innerHTML = `Creating ${document.getElementById("gamename").value}...`
           document.getElementById("form").style.display = "none";
           $.ajax({
             url: `https://simple-api.glif.app/${glifId}`,
@@ -833,7 +834,7 @@
 
     <div id="spinner">
         <img  src="./assets/spinner.gif"/>
-        <div>Creating game...</div>
+        <div id="create-game">Creating game...</div>
     </div>
 
     <div id="gamelink"></div>
