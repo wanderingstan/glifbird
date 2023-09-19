@@ -718,7 +718,7 @@
             background-color: #4ec0ca;
         }
 
-        input, textarea {
+        input, textarea, select {
             font-size: 100%;
             color: rgb(120, 113, 108);
             filter: drop-shadow(rgba(0, 0, 0, 0.05) 0px 1px 1px);
@@ -803,10 +803,19 @@
         </div>
 
         <div>
-            <label for="background">Description of background</label><br/>
+            <label for="background">Background</label><br/>
             <textarea name="background" id="background">Arctic expanse with icebergs and blue sky.</textarea>
         </div>
 
+        <div>
+            <label for="artstyle">Art style:</label>
+
+            <select name="artstyle" id="artstyle" onchange="document.getElementById('glifid').value=document.getElementById('artstyle').value">
+              <option value="clmhtbbe70013l40g5knjc4f8">Cartoon</option>
+              <option value="clmqkz0ce000jl60fj9f4hvwd">Realistic</option>
+            </select>
+
+        </div>
         <div>
             <input type="checkbox" name="easy" id="easy"/><label for="easy">Easy Game</label>
         </div>
