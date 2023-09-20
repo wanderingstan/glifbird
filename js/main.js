@@ -195,7 +195,7 @@ $(document).ready(function() {
    // legacy
    var birdImageUrl = searchParams.get("animal-image")
    var pipeImageUrl = searchParams.get("pipe-image")
-   var backgroundImage = searchParams.get("background-image")
+   var backgroundImageUrl = searchParams.get("background-image")
    var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
    var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
 
