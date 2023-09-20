@@ -59,17 +59,35 @@ var loopPipeloop;
 
 
 function loadPipeImage(pipeImageUrl) {
-   // One liner function:
-   const addCSS = css => document.head.appendChild(document.createElement("style")).innerHTML=css;
+    // One liner css function:
+    const addCSS = css => document.head.appendChild(document.createElement("style")).innerHTML=css;
+
+    // canvas cropping function
+    const cropCanvas = (sourceCanvas,left,top,width,height) => {
+        let destCanvas = document.createElement('canvas');
+        destCanvas.width = width;
+        destCanvas.height = height;
+        destCanvas.getContext("2d").drawImage(
+            sourceCanvas,
+            left,top,width,height,  // source rect with content to crop
+            0,0,width,height);      // newCanvas, same size as source rect
+        return destCanvas;
+    }
+
 
    // var canvas = document.createElement("canvas");
-   var canvas = document.getElementById("pipe-canvas");
+   var canvas = document.getElementById("pipe-bottom-canvas");
    var context = canvas.getContext('2d');
    var image = new Image();
    image.onload = function() {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
         context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
         context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
+
+        // Now do regular piping
+        //var pipeCanvas = document.getElementById("pipe-bottom-canvas");
+        pipeCanvas = cropCanvas(canvas,0,0,canvas.width,100);
+
         addCSS(`
             .pipe_upper:after {
                 background-image: url('${canvas.toDataURL("image/png")}');
@@ -79,7 +97,30 @@ function loadPipeImage(pipeImageUrl) {
                 height: 56px;
                 left: -9px;
             }
+
+            .pipe_lower:after {
+                background-image: url('${canvas.toDataURL("image/png")}');
+                background-size: 70px;
+                bottom: 0px;
+                width: 70px;
+                height: 56px;
+                left: -9px;
+                transform: scaleX(-1) rotate(180deg);
+                -webkit-transform: scaleX(-1) rotate(180deg);
+            }
+
+            .pipe_upper {
+                background-image: url('${pipeCanvas.toDataURL("image/png")}');
+                background-size: 70px;
+            }
+
+            .pipe_lower {
+                background-image: url('${pipeCanvas.toDataURL("image/png")}');
+                background-size: 70px;
+            }
+
         `);
+
 
         // $('#player').css({
         //    'background-size' : "34px;",
