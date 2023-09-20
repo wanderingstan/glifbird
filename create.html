@@ -718,12 +718,15 @@
                 var gameName = document.getElementById("gamename").value;
                 var gameSummary = output.gameSummary;
 
-                var gameUrl = (`index.html` +
-                    `?background-image=${encodeURIComponent(backgroundImage)}` +
-                    `&animal-image=${encodeURIComponent(animalImage)}` +
-                    `&gamename=${encodeURIComponent(gameName)}` +
-                    `&gamesummary=${encodeURIComponent(gameSummary)}` +
+                var gameUrl = (`index.html?j=${encodeURIComponent(response.output)}`+
                     (document.getElementById("easy").checked ? "&easy" : ""));
+
+                // var gameUrl = (`index.html` +
+                //     `?background-image=${encodeURIComponent(backgroundImage)}` +
+                //     `&animal-image=${encodeURIComponent(animalImage)}` +
+                //     `&gamename=${encodeURIComponent(gameName)}` +
+                //     `&gamesummary=${encodeURIComponent(gameSummary)}` +
+                //     (document.getElementById("easy").checked ? "&easy" : ""));
                 console.log(gameUrl);
                 document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
                 // window.location = gameUrl;

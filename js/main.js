@@ -190,19 +190,32 @@ $(document).ready(function() {
 
    //parse glif images passed in
    var searchParams = new URLSearchParams(window.location.search);
+   var gameJsonString = searchParams.get("j") // all game in one json
+
+   // legacy
    var birdImageUrl = searchParams.get("animal-image")
    var pipeImageUrl = searchParams.get("pipe-image")
    var backgroundImage = searchParams.get("background-image")
    var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
    var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
 
+   if (gameJsonString) {
+        // oh my could this be cleaned up...
+        var gameJson = JSON.parse(gameJsonString);
+        backgroundImageUrl = gameJson.backgroundImageUrl;
+        birdImageUrl = gameJson.animalImageUrl;
+        pipeImageUrl = gameJson.pipeBottomUrl;
+        gameName = gameJson.gameName;
+        gameSummary = gameJson.gameSummary;
+   }
+
    $("#gamename").text(gamename);
    $("#gamesummary").text(gamesummary);
 
-   if (!birdImageUrl || !backgroundImage) {
-      // Go to create if nothing specified
-      window.location = "create.html"
-   }
+   // if (!birdImageUrl || !backgroundImage) {
+   //    // Go to create if nothing specified
+   //    window.location = "create.html"
+   // }
 
    if(searchParams.get("debug") != null)
       debugmode = true;
