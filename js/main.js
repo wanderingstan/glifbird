@@ -58,6 +58,42 @@ var loopGameloop;
 var loopPipeloop;
 
 
+function loadPipeImage(pipeImageUrl) {
+   // One liner function:
+   const addCSS = css => document.head.appendChild(document.createElement("style")).innerHTML=css;
+
+   // var canvas = document.createElement("canvas");
+   var canvas = document.getElementById("pipe-canvas");
+   var context = canvas.getContext('2d');
+   var image = new Image();
+   image.onload = function() {
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
+        context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
+        addCSS(`
+            .pipe_upper:after {
+                background-image: url('${canvas.toDataURL("image/png")}');
+                background-size: 70px;
+                bottom: 0px;
+                width: 70px;
+                height: 56px;
+                left: -9px;
+            }
+        `);
+
+        // $('#player').css({
+        //    'background-size' : "34px;",
+        //    'background-image' : "url(" + canvas.toDataURL("image/png")+ ")"
+// });
+   };
+   console.log(`Loading bird from ${pipeImageUrl}`)
+   image.crossOrigin = `Anonymous`;
+   if (pipeImageUrl) {
+      image.src = pipeImageUrl;
+   }
+}
+
+
 function loadBirdImage(birdImageUrl) {
    // var canvas = document.createElement("canvas");
    var canvas = document.getElementById("bird-canvas");
@@ -80,7 +116,6 @@ function loadBirdImage(birdImageUrl) {
       image.src = birdImageUrl;
    else
       image.src = `./assets/bird2.png`
-
 }
 
 
@@ -107,6 +142,7 @@ function loadSkyImage(skyImageUrl) {
 }
 
 
+
 var gameIsRunning = false;
 
 $(document).ready(function() {
@@ -114,6 +150,7 @@ $(document).ready(function() {
    //parse glif images passed in
    var searchParams = new URLSearchParams(window.location.search);
    var birdImageUrl = searchParams.get("animal-image")
+   var pipeImageUrl = searchParams.get("pipe-image")
    var backgroundImage = searchParams.get("background-image")
    var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
    var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
@@ -133,8 +170,9 @@ $(document).ready(function() {
 
 
    //stan: load our new bird and sky
-   loadBirdImage(birdImageUrl)
-   loadSkyImage(backgroundImage)
+   loadBirdImage(birdImageUrl);
+   loadSkyImage(backgroundImage);
+   loadPipeImage(pipeImageUrl);
 
    //get the highscore
    var savedscore = getCookie("highscore");

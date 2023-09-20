@@ -1,4 +1,7 @@
 
+canvas {
+   display: none; /* canvas's just used for image manipulation */
+}
 
 @-webkit-keyframes animLand {
    0% { background-position: 0px 0px; }
@@ -417,9 +420,9 @@ Screen - Game
 {
    content: "";
    position: absolute;
-   bottom: 0;
+   bottom: -30px;
    width: 52px;
-   height: 26px;
+   height: 56px;
    background-image: url('../assets/pipe-down.png');
 }
 
