@@ -420,9 +420,9 @@ Screen - Game
 {
    content: "";
    position: absolute;
-   bottom: -30px;
+   bottom: 0;
    width: 52px;
-   height: 56px;
+   height: 26px;
    background-image: url('../assets/pipe-down.png');
 }
 
