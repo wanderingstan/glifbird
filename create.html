@@ -2,809 +2,811 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-      <!-- Open Graph tags -->
-      <meta property="og:title" content="Gliffy Bird Creator" />
-      <meta property="og:description" content="create a gliffy bird. a remake of popular game flappy bird built in html/css/js powered by the AI of glif.app" />
-      <meta property="og:type" content="website" />
-      <meta property="og:image" content="https://github.com/wanderingstan/glifbird/assets/glif_logo.png" />
-      <meta property="og:url" content="https://github.com/wanderingstan/glifbird/create.html" />
-      <meta property="og:site_name" content="Gliffy Bird Creator" />
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="Gliffy Bird Creator" />
+    <meta property="og:description"
+        content="create a gliffy bird. a remake of popular game flappy bird built in html/css/js powered by the AI of glif.app" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://github.com/wanderingstan/glifbird/assets/glif_logo.png" />
+    <meta property="og:url" content="https://github.com/wanderingstan/glifbird/create.html" />
+    <meta property="og:site_name" content="Gliffy Bird Creator" />
 
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.transit.min.js"></script>
     <script>
 
-    // URL of the JSONL file
-    const jsonlUrl = "https://wanderingstan.com/glif/games.jsonl";
+        // URL of the JSONL file
+        const jsonlUrl = "https://wanderingstan.com/glif/games.jsonl";
 
-    // Number of random lines to select
-    const numRandomLines = 5;
+        // Number of random lines to select
+        const numRandomLines = 5;
 
-    // Function to fetch and process the JSONL data
-    async function fetchAndProcessJSONL() {
-      try {
-        // Fetch the JSONL file
-        const response = await fetch(jsonlUrl);
+        // Function to fetch and process the JSONL data
+        async function fetchAndProcessJSONL() {
+            try {
+                // Fetch the JSONL file
+                const response = await fetch(jsonlUrl);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch the JSONL file.");
-        }
-
-        // Read the JSONL data line by line
-        const jsonlText = await response.text();
-        const lines = jsonlText.split("\n");
-
-        // Shuffle the lines randomly
-        const shuffledLines = shuffleArray(lines);
-
-        // Process the first 5 random lines as JSON objects
-        for (let i = 0; i < numRandomLines && i < shuffledLines.length; i++) {
-          try {
-            const line = shuffledLines[i].trim();
-            if (line) {
-              const jsonObj = JSON.parse(line);
-              const imageUrl = jsonObj.animalImage;
-              const backgroundImage = jsonObj.backgroundImage;
-              const gameName = jsonObj.gamename;
-              const gameSummary = jsonObj.gamesummary;
-
-                const gameUrl = (`index.html` +
-                    `?background-image=${encodeURIComponent(backgroundImage)}` +
-                    `&animal-image=${encodeURIComponent(imageUrl)}` +
-                    `&gamename=${encodeURIComponent(gameName)}` +
-                    `&gamesummary=${encodeURIComponent(gameSummary)}` +
-                    (document.getElementById("easy").checked ? "&easy" : ""));
-
-              // Create a <div> element
-              const div = document.createElement("div");
-              div.classList.add("game-button");
-              div.onclick = function(ev) {window.location = gameUrl;}
-
-              // Create an image element and set its source
-              const img = document.createElement("img");
-              img.src = imageUrl;
-
-              // Create a paragraph element for the game name
-              const p = document.createElement("p");
-              p.textContent = gameName;
-
-              // Append the image and text to the <div>
-              div.appendChild(img);
-              div.appendChild(p);
-
-              // Append the <div> to the document body
-              document.getElementById("old-games").appendChild(div);
-            }
-          } catch (error) {
-            console.error("Error parsing JSON:", error);
-          }
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    }
-
-    // Helper function to shuffle an array randomly
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
-
-
-    function randomBackground() {
-        backgroundArray = [
-            "Arctic scene with icebergs and a whale",
-            "Cityscape of giant metropolis with skyscrapers at sunset",
-            "Happy green fields with a big blue sky and happy sun",
-            "Mad max desert hellscape",
-            "Taylor Swift concert",
-            "World War I war zone",
-            "Jungle expanse with lush trees, vines, and thick vegetation",
-            "Crazy landscape like from a salvador dali painting",
-            "A windows desktop wallpaper",
-            "Outer space with asteroids, planets, and a shooting star",
-            "Coffee roastery",
-            "Mexican mountain landscape with aztec pyramids",
-            "Outer space with asteroids, planets, and a shooting star",
-            "Underwater with coral reef, bubbles, and some fish",
-            "Bamboo forest in China with stunning rock formations in the background",
-            "The grand canyon at sunset",
-            "Beach with waves crashing and fish jumping, sun high in the sky.",
-            "Ghanian village with little houses, at noon.",
-            "Ted Lasso locker room after a game.",
-            "The shire from Lord of the Rings",
-            "Los Angeles in the future like in Blade Runner",
-            "The world of Paw Patrol",
-            "Moon landscape made out of LEGO",
-            "A 2D scene of minimalist, geometric illusions. With high contrast graphics and symmetrical obstacles.",
-            "The Playa at Burning Man with the Man burning in the background.",
-            "Trendy Berlin neighborhood",
-            "The insides of a human body, showing organs, veins, glands, etc"
-        ];
-        const random = Math.floor(Math.random() * backgroundArray.length);
-        return backgroundArray[random];
-    }
-
-    function randomAnimal() {
-        animalArray = [
-            "Panda with a horn like unicorn",
-            "Taylor Swift",
-            "Tyrannosaurus Rex",
-            "Teradactyl",
-            "Automobile",
-            "Canidae",
-            "Felidae",
-            "Cat",
-            "Cattle",
-            "Dog",
-            "Donkey",
-            "Goat",
-            "Guinea pig",
-            "Horse",
-            "Pig",
-            "Rabbit",
-            "Fancy rat varieties",
-            "laboratory rat strains",
-            "Sheep breeds",
-            "Water buffalo breeds",
-            "Chicken breeds",
-            "Duck breeds",
-            "Goose breeds",
-            "Pigeon breeds",
-            "Turkey breeds",
-            "Aardvark",
-            "Aardwolf",
-            "African buffalo",
-            "African elephant",
-            "African leopard",
-            "Albatross",
-            "Alligator",
-            "Alpaca",
-            "American buffalo (bison)",
-            "American robin",
-            "Amphibian",
-            "Anaconda",
-            "Angelfish",
-            "Anglerfish",
-            "Ant",
-            "Anteater",
-            "Antelope",
-            "Antlion",
-            "Ape",
-            "Aphid",
-            "Arabian leopard",
-            "Arctic Fox",
-            "Arctic Wolf",
-            "Armadillo",
-            "Arrow crab",
-            "Asp",
-            "Ass (donkey)",
-            "Baboon",
-            "Badger",
-            "Bald eagle",
-            "Bandicoot",
-            "Barnacle",
-            "Barracuda",
-            "Basilisk",
-            "Bass",
-            "Bat",
-            "Beaked whale",
-            "Bear",
-            "Beaver",
-            "Bedbug",
-            "Bee",
-            "Beetle",
-            "Bird",
-            "Bison",
-            "Blackbird",
-            "Black panther",
-            "Black widow spider",
-            "Blue bird",
-            "Blue jay",
-            "Blue whale",
-            "Boa",
-            "Boar",
-            "Bobcat",
-            "Bobolink",
-            "Bonobo",
-            "Booby",
-            "Box jellyfish",
-            "Bovid",
-            "Buffalo, African",
-            "Buffalo, American (bison)",
-            "Bug",
-            "Butterfly",
-            "Buzzard",
-            "Camel",
-            "Canid",
-            "Cape buffalo",
-            "Capybara",
-            "Cardinal",
-            "Caribou",
-            "Carp",
-            "Cat",
-            "Catshark",
-            "Caterpillar",
-            "Catfish",
-            "Cattle",
-            "Centipede",
-            "Cephalopod",
-            "Chameleon",
-            "Cheetah",
-            "Chickadee",
-            "Chicken",
-            "Chimpanzee",
-            "Chinchilla",
-            "Chipmunk",
-            "Clam",
-            "Clownfish",
-            "Cobra",
-            "Cockroach",
-            "Cod",
-            "Condor",
-            "Constrictor",
-            "Coral",
-            "Cougar",
-            "Cow",
-            "Coyote",
-            "Crab",
-            "Crane",
-            "Crane fly",
-            "Crawdad",
-            "Crayfish",
-            "Cricket",
-            "Crocodile",
-            "Crow",
-            "Cuckoo",
-            "Cicada",
-            "Damselfly",
-            "Deer",
-            "Dingo",
-            "Dinosaur",
-            "Dog",
-            "Dolphin",
-            "Donkey",
-            "Dormouse",
-            "Dove",
-            "Dragonfly",
-            "Dragon",
-            "Duck",
-            "Dung beetle",
-            "Eagle",
-            "Earthworm",
-            "Earwig",
-            "Echidna",
-            "Eel",
-            "Egret",
-            "Elephant",
-            "Elephant seal",
-            "Elk",
-            "Emu",
-            "English pointer",
-            "Ermine",
-            "Falcon",
-            "Ferret",
-            "Finch",
-            "Firefly",
-            "Fish",
-            "Flamingo",
-            "Flea",
-            "Fly",
-            "Flyingfish",
-            "Fowl",
-            "Fox",
-            "Frog",
-            "Fruit bat",
-            "Gamefowl",
-            "Galliform",
-            "Gazelle",
-            "Gecko",
-            "Gerbil",
-            "Giant panda",
-            "Giant squid",
-            "Gibbon",
-            "Gila monster",
-            "Giraffe",
-            "Goat",
-            "Goldfish",
-            "Goose",
-            "Gopher",
-            "Gorilla",
-            "Grasshopper",
-            "Great blue heron",
-            "Great white shark",
-            "Grizzly bear",
-            "Ground shark",
-            "Ground sloth",
-            "Grouse",
-            "Guan",
-            "Guanaco",
-            "Guineafowl",
-            "Guinea pig",
-            "Gull",
-            "Guppy",
-            "Haddock",
-            "Halibut",
-            "Hammerhead shark",
-            "Hamster",
-            "Hare",
-            "Harrier",
-            "Hawk",
-            "Hedgehog",
-            "Hermit crab",
-            "Heron",
-            "Herring",
-            "Hippopotamus",
-            "Hookworm",
-            "Hornet",
-            "Horse",
-            "Hoverfly",
-            "Hummingbird",
-            "Humpback whale",
-            "Hyena",
-            "Iguana",
-            "Impala",
-            "Irukandji jellyfish",
-            "Jackal",
-            "Jaguar",
-            "Jay",
-            "Jellyfish",
-            "Junglefowl",
-            "Kangaroo",
-            "Kangaroo mouse",
-            "Kangaroo rat",
-            "Kingfisher",
-            "Kite",
-            "Kiwi",
-            "Koala",
-            "Koi",
-            "Komodo dragon",
-            "Krill",
-            "Ladybug",
-            "Lamprey",
-            "Landfowl",
-            "Land snail",
-            "Lark",
-            "Leech",
-            "Lemming",
-            "Lemur",
-            "Leopard",
-            "Leopon",
-            "Limpet",
-            "Lion",
-            "Lizard",
-            "Llama",
-            "Lobster",
-            "Locust",
-            "Loon",
-            "Louse",
-            "Lungfish",
-            "Lynx",
-            "Macaw",
-            "Mackerel",
-            "Magpie",
-            "Mammal",
-            "Manatee",
-            "Mandrill",
-            "Manta ray",
-            "Marlin",
-            "Marmoset",
-            "Marmot",
-            "Marsupial",
-            "Marten",
-            "Mastodon",
-            "Meadowlark",
-            "Meerkat",
-            "Mink",
-            "Minnow",
-            "Mite",
-            "Mockingbird",
-            "Mole",
-            "Mollusk",
-            "Mongoose",
-            "Monitor lizard",
-            "Monkey",
-            "Moose",
-            "Mosquito",
-            "Moth",
-            "Mountain goat",
-            "Mouse",
-            "Mule",
-            "Muskox",
-            "Narwhal",
-            "Newt",
-            "New World quail",
-            "Nightingale",
-            "Ocelot",
-            "Octopus",
-            "Old World quail",
-            "Opossum",
-            "Orangutan",
-            "Orca",
-            "Ostrich",
-            "Otter",
-            "Owl",
-            "Ox",
-            "Panda",
-            "Panther",
-            "Panthera hybrid",
-            "Parakeet",
-            "Parrot",
-            "Parrotfish",
-            "Partridge",
-            "Peacock",
-            "Peafowl",
-            "Pelican",
-            "Penguin",
-            "Perch",
-            "Peregrine falcon",
-            "Pheasant",
-            "Pig",
-            "Pigeon",
-            "Pike",
-            "Pilot whale",
-            "Pinniped",
-            "Piranha",
-            "Planarian",
-            "Platypus",
-            "Polar bear",
-            "Pony",
-            "Porcupine",
-            "Porpoise",
-            "Portuguese man o war",
-            "Possum",
-            "Prairie dog",
-            "Prawn",
-            "Praying mantis",
-            "Primate",
-            "Ptarmigan",
-            "Puffin",
-            "Puma",
-            "Python",
-            "Quail",
-            "Quelea",
-            "Quokka",
-            "Rabbit",
-            "Raccoon",
-            "Rainbow trout",
-            "Rat",
-            "Rattlesnake",
-            "Raven",
-            "Red panda",
-            "Reindeer",
-            "Reptile",
-            "Rhinoceros",
-            "Right whale",
-            "Roadrunner",
-            "Rodent",
-            "Rook",
-            "Rooster",
-            "Roundworm",
-            "Saber-toothed cat",
-            "Sailfish",
-            "Salamander",
-            "Salmon",
-            "Sawfish",
-            "Scale insect",
-            "Scallop",
-            "Scorpion",
-            "Seahorse",
-            "Sea lion",
-            "Sea slug",
-            "Sea snail",
-            "Shark",
-            "Sheep",
-            "Shrew",
-            "Shrimp",
-            "Silkworm",
-            "Silverfish",
-            "Skink",
-            "Skunk",
-            "Sloth",
-            "Slug",
-            "Smelt",
-            "Snail",
-            "Snake",
-            "Snipe",
-            "Snow leopard",
-            "Sockeye salmon",
-            "Sole",
-            "Sparrow",
-            "Sperm whale",
-            "Spider",
-            "Spider monkey",
-            "Spoonbill",
-            "Squid",
-            "Squirrel",
-            "Starfish",
-            "Star-nosed mole",
-            "Steelhead trout",
-            "Stingray",
-            "Stoat",
-            "Stork",
-            "Sturgeon",
-            "Sugar glider",
-            "Swallow",
-            "Swan",
-            "Swift",
-            "Swordfish",
-            "Swordtail",
-            "Tahr",
-            "Takin",
-            "Tapir",
-            "Tarantula",
-            "Tarsier",
-            "Tasmanian devil",
-            "Termite",
-            "Tern",
-            "Thrush",
-            "Tick",
-            "Tiger",
-            "Tiger shark",
-            "Tiglon",
-            "Toad",
-            "Tortoise",
-            "Toucan",
-            "Trapdoor spider",
-            "Tree frog",
-            "Trout",
-            "Tuna",
-            "Turkey",
-            "Turtle",
-            "Tyrannosaurus",
-            "Urial",
-            "Vampire bat",
-            "Vampire squid",
-            "Vicuna",
-            "Viper",
-            "Vole",
-            "Vulture",
-            "Wallaby",
-            "Walrus",
-            "Wasp",
-            "Warbler",
-            "Water Boa",
-            "Water buffalo",
-            "Weasel",
-            "Whale",
-            "Whippet",
-            "Whitefish",
-            "Whooping crane",
-            "Wildcat",
-            "Wildebeest",
-            "Wildfowl",
-            "Wolf",
-            "Wolverine",
-            "Wombat",
-            "Woodpecker",
-            "Worm",
-            "Wren",
-            "Xerinae",
-            "X-ray fish",
-            "Yak",
-            "Yellow perch",
-            "Zebra",
-            "Zebra finch",
-            "Animals by number of neurons",
-            "Animals by size",
-            "Common household pests",
-            "Common names of poisonous animals",
-            "Alpaca",
-            "Bali cattle",
-            "Cat",
-            "Cattle",
-            "Chicken",
-            "Dog",
-            "Domestic Bactrian camel",
-            "Domestic canary",
-            "Domestic dromedary camel",
-            "Domestic duck",
-            "Domestic goat",
-            "Domestic goose",
-            "Domestic guineafowl",
-            "Domestic hedgehog",
-            "Domestic pig",
-            "Domestic pigeon",
-            "Domestic rabbit",
-            "Domestic silkmoth",
-            "Domestic silver fox",
-            "Domestic turkey",
-            "Donkey",
-            "Fancy mouse",
-            "Fancy rat",
-            "Lab rat",
-            "Ferret",
-            "Gayal",
-            "Goldfish",
-            "Guinea pig",
-            "Guppy",
-            "Horse",
-            "Koi",
-            "Llama",
-            "Ringneck dove",
-            "Sheep",
-            "Siamese fighting fish",
-            "Society finch",
-            "Yak",
-            "Water buffalo"
-        ];
-        const random = Math.floor(Math.random() * animalArray.length);
-        return animalArray[random];
-    }
-
-    var glifid = "clmhtbbe70013l40g5knjc4f8"
-    var gamename = "Create Glif Game"
-
-    function onLoad() {
-        var searchParams = new URLSearchParams(window.location.search);
-        if (searchParams.get("glif-id")) {
-            glifid = searchParams.get("glif-id")
-        }
-        if (searchParams.get("gamename")) {            
-            gamename = searchParams.get("gamename")
-        }
-        document.getElementById("title").innerHTML = gamename;
-        document.getElementById("glifid").innerHTML = glifid
-        setRandoms();
-        fetchAndProcessJSONL();
-
-    }
-
-    function setRandoms() {
-        document.getElementById('animal').value = randomAnimal()
-        document.getElementById('background').value = randomBackground()
-        document.getElementById('gamename').value = "Flappy " + document.getElementById('animal').value;
-    }
-
-    function isValidHttpUrl(string) {
-      let url;
-
-      try {
-        url = new URL(string);
-      } catch (_) {
-        return false;
-      }
-
-      return url.protocol === "http:" || url.protocol === "https:";
-    }
-
-    function createGame() {
-
-        $(document).ready(function() {
-
-          const glifId = (document.getElementById("animal").value == "test" ?
-           "clmi665rh0000l30fclfj4smp" :  // TEST GLIF
-           // "clmhtbbe70013l40g5knjc4f8" // REAL GLIF
-           document.getElementById("glifid").value
-          )
-          const data = {
-            id: glifId,
-            input: {
-              animal: document.getElementById("animal").value,
-              background: document.getElementById("background").value
-            }
-          };
-          console.log("Loading glif");
-          document.getElementById("spinner").style.display = "block";
-          document.getElementById("create-game").innerHTML = `Creating ${document.getElementById("gamename").value}...`
-          document.getElementById("form").style.display = "none";
-          $.ajax({
-            url: `https://simple-api.glif.app/${glifId}`,
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function(response) {
-                console.log({response});
-                output = JSON.parse(response.output);
-                console.log({output});
-                if (!output || !isValidHttpUrl(output.backgroundImageUrl) || !isValidHttpUrl(output.animalImageUrl)) {
-                    console.error("Got invalid URLs returned.");
-                    window.alert(`Got invalid URLs returned from GLIF: ${output}`)
-                    return;
+                if (!response.ok) {
+                    throw new Error("Failed to fetch the JSONL file.");
                 }
 
-                var backgroundImage = output.backgroundImageUrl;
-                var animalImage = output.animalImageUrl;
-                var gameName = document.getElementById("gamename").value;
-                var gameSummary = output.gameSummary;
+                // Read the JSONL data line by line
+                const jsonlText = await response.text();
+                const lines = jsonlText.split("\n");
 
-                var gameUrl = (`index.html?j=${encodeURIComponent(response.output)}`+
-                    (document.getElementById("easy").checked ? "&easy" : ""));
+                // Shuffle the lines randomly
+                const shuffledLines = shuffleArray(lines);
 
-                // var gameUrl = (`index.html` +
-                //     `?background-image=${encodeURIComponent(backgroundImage)}` +
-                //     `&animal-image=${encodeURIComponent(animalImage)}` +
-                //     `&gamename=${encodeURIComponent(gameName)}` +
-                //     `&gamesummary=${encodeURIComponent(gameSummary)}` +
-                //     (document.getElementById("easy").checked ? "&easy" : ""));
-                console.log(gameUrl);
-                document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
-                // window.location = gameUrl;
+                // Process the first 5 random lines as JSON objects
+                for (let i = 0; i < numRandomLines && i < shuffledLines.length; i++) {
+                    try {
+                        const line = shuffledLines[i].trim();
+                        if (line) {
+                            const jsonObj = JSON.parse(line);
+                            const imageUrl = jsonObj.animalImage;
+                            const backgroundImage = jsonObj.backgroundImage;
+                            const gameName = jsonObj.gamename;
+                            const gameSummary = jsonObj.gamesummary;
 
-                // Record our game on server
+                            const gameUrl = (`index.html` +
+                                `?background-image=${encodeURIComponent(backgroundImage)}` +
+                                `&animal-image=${encodeURIComponent(imageUrl)}` +
+                                `&gamename=${encodeURIComponent(gameName)}` +
+                                `&gamesummary=${encodeURIComponent(gameSummary)}` +
+                                (document.getElementById("easy").checked ? "&easy" : ""));
+
+                            // Create a <div> element
+                            const div = document.createElement("div");
+                            div.classList.add("game-button");
+                            div.onclick = function (ev) { window.location = gameUrl; }
+
+                            // Create an image element and set its source
+                            const img = document.createElement("img");
+                            img.src = imageUrl;
+
+                            // Create a paragraph element for the game name
+                            const p = document.createElement("p");
+                            p.textContent = gameName;
+
+                            // Append the image and text to the <div>
+                            div.appendChild(img);
+                            div.appendChild(p);
+
+                            // Append the <div> to the document body
+                            document.getElementById("old-games").appendChild(div);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing JSON:", error);
+                    }
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        }
+
+        // Helper function to shuffle an array randomly
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+
+
+        function randomBackground() {
+            backgroundArray = [
+                "Arctic scene with icebergs and a whale",
+                "Cityscape of giant metropolis with skyscrapers at sunset",
+                "Happy green fields with a big blue sky and happy sun",
+                "Mad max desert hellscape",
+                "Taylor Swift concert",
+                "World War I war zone",
+                "Jungle expanse with lush trees, vines, and thick vegetation",
+                "Crazy landscape like from a salvador dali painting",
+                "A windows desktop wallpaper",
+                "Outer space with asteroids, planets, and a shooting star",
+                "Coffee roastery",
+                "Mexican mountain landscape with aztec pyramids",
+                "Outer space with asteroids, planets, and a shooting star",
+                "Underwater with coral reef, bubbles, and some fish",
+                "Bamboo forest in China with stunning rock formations in the background",
+                "The grand canyon at sunset",
+                "Beach with waves crashing and fish jumping, sun high in the sky.",
+                "Ghanian village with little houses, at noon.",
+                "Ted Lasso locker room after a game.",
+                "The shire from Lord of the Rings",
+                "Los Angeles in the future like in Blade Runner",
+                "The world of Paw Patrol",
+                "Moon landscape made out of LEGO",
+                "A 2D scene of minimalist, geometric illusions. With high contrast graphics and symmetrical obstacles.",
+                "The Playa at Burning Man with the Man burning in the background.",
+                "Trendy Berlin neighborhood",
+                "The insides of a human body, showing organs, veins, glands, etc"
+            ];
+            const random = Math.floor(Math.random() * backgroundArray.length);
+            return backgroundArray[random];
+        }
+
+        function randomAnimal() {
+            animalArray = [
+                "Panda with a horn like unicorn",
+                "Taylor Swift",
+                "Tyrannosaurus Rex",
+                "Teradactyl",
+                "Automobile",
+                "Canidae",
+                "Felidae",
+                "Cat",
+                "Cattle",
+                "Dog",
+                "Donkey",
+                "Goat",
+                "Guinea pig",
+                "Horse",
+                "Pig",
+                "Rabbit",
+                "Fancy rat varieties",
+                "laboratory rat strains",
+                "Sheep breeds",
+                "Water buffalo breeds",
+                "Chicken breeds",
+                "Duck breeds",
+                "Goose breeds",
+                "Pigeon breeds",
+                "Turkey breeds",
+                "Aardvark",
+                "Aardwolf",
+                "African buffalo",
+                "African elephant",
+                "African leopard",
+                "Albatross",
+                "Alligator",
+                "Alpaca",
+                "American buffalo (bison)",
+                "American robin",
+                "Amphibian",
+                "Anaconda",
+                "Angelfish",
+                "Anglerfish",
+                "Ant",
+                "Anteater",
+                "Antelope",
+                "Antlion",
+                "Ape",
+                "Aphid",
+                "Arabian leopard",
+                "Arctic Fox",
+                "Arctic Wolf",
+                "Armadillo",
+                "Arrow crab",
+                "Asp",
+                "Ass (donkey)",
+                "Baboon",
+                "Badger",
+                "Bald eagle",
+                "Bandicoot",
+                "Barnacle",
+                "Barracuda",
+                "Basilisk",
+                "Bass",
+                "Bat",
+                "Beaked whale",
+                "Bear",
+                "Beaver",
+                "Bedbug",
+                "Bee",
+                "Beetle",
+                "Bird",
+                "Bison",
+                "Blackbird",
+                "Black panther",
+                "Black widow spider",
+                "Blue bird",
+                "Blue jay",
+                "Blue whale",
+                "Boa",
+                "Boar",
+                "Bobcat",
+                "Bobolink",
+                "Bonobo",
+                "Booby",
+                "Box jellyfish",
+                "Bovid",
+                "Buffalo, African",
+                "Buffalo, American (bison)",
+                "Bug",
+                "Butterfly",
+                "Buzzard",
+                "Camel",
+                "Canid",
+                "Cape buffalo",
+                "Capybara",
+                "Cardinal",
+                "Caribou",
+                "Carp",
+                "Cat",
+                "Catshark",
+                "Caterpillar",
+                "Catfish",
+                "Cattle",
+                "Centipede",
+                "Cephalopod",
+                "Chameleon",
+                "Cheetah",
+                "Chickadee",
+                "Chicken",
+                "Chimpanzee",
+                "Chinchilla",
+                "Chipmunk",
+                "Clam",
+                "Clownfish",
+                "Cobra",
+                "Cockroach",
+                "Cod",
+                "Condor",
+                "Constrictor",
+                "Coral",
+                "Cougar",
+                "Cow",
+                "Coyote",
+                "Crab",
+                "Crane",
+                "Crane fly",
+                "Crawdad",
+                "Crayfish",
+                "Cricket",
+                "Crocodile",
+                "Crow",
+                "Cuckoo",
+                "Cicada",
+                "Damselfly",
+                "Deer",
+                "Dingo",
+                "Dinosaur",
+                "Dog",
+                "Dolphin",
+                "Donkey",
+                "Dormouse",
+                "Dove",
+                "Dragonfly",
+                "Dragon",
+                "Duck",
+                "Dung beetle",
+                "Eagle",
+                "Earthworm",
+                "Earwig",
+                "Echidna",
+                "Eel",
+                "Egret",
+                "Elephant",
+                "Elephant seal",
+                "Elk",
+                "Emu",
+                "English pointer",
+                "Ermine",
+                "Falcon",
+                "Ferret",
+                "Finch",
+                "Firefly",
+                "Fish",
+                "Flamingo",
+                "Flea",
+                "Fly",
+                "Flyingfish",
+                "Fowl",
+                "Fox",
+                "Frog",
+                "Fruit bat",
+                "Gamefowl",
+                "Galliform",
+                "Gazelle",
+                "Gecko",
+                "Gerbil",
+                "Giant panda",
+                "Giant squid",
+                "Gibbon",
+                "Gila monster",
+                "Giraffe",
+                "Goat",
+                "Goldfish",
+                "Goose",
+                "Gopher",
+                "Gorilla",
+                "Grasshopper",
+                "Great blue heron",
+                "Great white shark",
+                "Grizzly bear",
+                "Ground shark",
+                "Ground sloth",
+                "Grouse",
+                "Guan",
+                "Guanaco",
+                "Guineafowl",
+                "Guinea pig",
+                "Gull",
+                "Guppy",
+                "Haddock",
+                "Halibut",
+                "Hammerhead shark",
+                "Hamster",
+                "Hare",
+                "Harrier",
+                "Hawk",
+                "Hedgehog",
+                "Hermit crab",
+                "Heron",
+                "Herring",
+                "Hippopotamus",
+                "Hookworm",
+                "Hornet",
+                "Horse",
+                "Hoverfly",
+                "Hummingbird",
+                "Humpback whale",
+                "Hyena",
+                "Iguana",
+                "Impala",
+                "Irukandji jellyfish",
+                "Jackal",
+                "Jaguar",
+                "Jay",
+                "Jellyfish",
+                "Junglefowl",
+                "Kangaroo",
+                "Kangaroo mouse",
+                "Kangaroo rat",
+                "Kingfisher",
+                "Kite",
+                "Kiwi",
+                "Koala",
+                "Koi",
+                "Komodo dragon",
+                "Krill",
+                "Ladybug",
+                "Lamprey",
+                "Landfowl",
+                "Land snail",
+                "Lark",
+                "Leech",
+                "Lemming",
+                "Lemur",
+                "Leopard",
+                "Leopon",
+                "Limpet",
+                "Lion",
+                "Lizard",
+                "Llama",
+                "Lobster",
+                "Locust",
+                "Loon",
+                "Louse",
+                "Lungfish",
+                "Lynx",
+                "Macaw",
+                "Mackerel",
+                "Magpie",
+                "Mammal",
+                "Manatee",
+                "Mandrill",
+                "Manta ray",
+                "Marlin",
+                "Marmoset",
+                "Marmot",
+                "Marsupial",
+                "Marten",
+                "Mastodon",
+                "Meadowlark",
+                "Meerkat",
+                "Mink",
+                "Minnow",
+                "Mite",
+                "Mockingbird",
+                "Mole",
+                "Mollusk",
+                "Mongoose",
+                "Monitor lizard",
+                "Monkey",
+                "Moose",
+                "Mosquito",
+                "Moth",
+                "Mountain goat",
+                "Mouse",
+                "Mule",
+                "Muskox",
+                "Narwhal",
+                "Newt",
+                "New World quail",
+                "Nightingale",
+                "Ocelot",
+                "Octopus",
+                "Old World quail",
+                "Opossum",
+                "Orangutan",
+                "Orca",
+                "Ostrich",
+                "Otter",
+                "Owl",
+                "Ox",
+                "Panda",
+                "Panther",
+                "Panthera hybrid",
+                "Parakeet",
+                "Parrot",
+                "Parrotfish",
+                "Partridge",
+                "Peacock",
+                "Peafowl",
+                "Pelican",
+                "Penguin",
+                "Perch",
+                "Peregrine falcon",
+                "Pheasant",
+                "Pig",
+                "Pigeon",
+                "Pike",
+                "Pilot whale",
+                "Pinniped",
+                "Piranha",
+                "Planarian",
+                "Platypus",
+                "Polar bear",
+                "Pony",
+                "Porcupine",
+                "Porpoise",
+                "Portuguese man o war",
+                "Possum",
+                "Prairie dog",
+                "Prawn",
+                "Praying mantis",
+                "Primate",
+                "Ptarmigan",
+                "Puffin",
+                "Puma",
+                "Python",
+                "Quail",
+                "Quelea",
+                "Quokka",
+                "Rabbit",
+                "Raccoon",
+                "Rainbow trout",
+                "Rat",
+                "Rattlesnake",
+                "Raven",
+                "Red panda",
+                "Reindeer",
+                "Reptile",
+                "Rhinoceros",
+                "Right whale",
+                "Roadrunner",
+                "Rodent",
+                "Rook",
+                "Rooster",
+                "Roundworm",
+                "Saber-toothed cat",
+                "Sailfish",
+                "Salamander",
+                "Salmon",
+                "Sawfish",
+                "Scale insect",
+                "Scallop",
+                "Scorpion",
+                "Seahorse",
+                "Sea lion",
+                "Sea slug",
+                "Sea snail",
+                "Shark",
+                "Sheep",
+                "Shrew",
+                "Shrimp",
+                "Silkworm",
+                "Silverfish",
+                "Skink",
+                "Skunk",
+                "Sloth",
+                "Slug",
+                "Smelt",
+                "Snail",
+                "Snake",
+                "Snipe",
+                "Snow leopard",
+                "Sockeye salmon",
+                "Sole",
+                "Sparrow",
+                "Sperm whale",
+                "Spider",
+                "Spider monkey",
+                "Spoonbill",
+                "Squid",
+                "Squirrel",
+                "Starfish",
+                "Star-nosed mole",
+                "Steelhead trout",
+                "Stingray",
+                "Stoat",
+                "Stork",
+                "Sturgeon",
+                "Sugar glider",
+                "Swallow",
+                "Swan",
+                "Swift",
+                "Swordfish",
+                "Swordtail",
+                "Tahr",
+                "Takin",
+                "Tapir",
+                "Tarantula",
+                "Tarsier",
+                "Tasmanian devil",
+                "Termite",
+                "Tern",
+                "Thrush",
+                "Tick",
+                "Tiger",
+                "Tiger shark",
+                "Tiglon",
+                "Toad",
+                "Tortoise",
+                "Toucan",
+                "Trapdoor spider",
+                "Tree frog",
+                "Trout",
+                "Tuna",
+                "Turkey",
+                "Turtle",
+                "Tyrannosaurus",
+                "Urial",
+                "Vampire bat",
+                "Vampire squid",
+                "Vicuna",
+                "Viper",
+                "Vole",
+                "Vulture",
+                "Wallaby",
+                "Walrus",
+                "Wasp",
+                "Warbler",
+                "Water Boa",
+                "Water buffalo",
+                "Weasel",
+                "Whale",
+                "Whippet",
+                "Whitefish",
+                "Whooping crane",
+                "Wildcat",
+                "Wildebeest",
+                "Wildfowl",
+                "Wolf",
+                "Wolverine",
+                "Wombat",
+                "Woodpecker",
+                "Worm",
+                "Wren",
+                "Xerinae",
+                "X-ray fish",
+                "Yak",
+                "Yellow perch",
+                "Zebra",
+                "Zebra finch",
+                "Animals by number of neurons",
+                "Animals by size",
+                "Common household pests",
+                "Common names of poisonous animals",
+                "Alpaca",
+                "Bali cattle",
+                "Cat",
+                "Cattle",
+                "Chicken",
+                "Dog",
+                "Domestic Bactrian camel",
+                "Domestic canary",
+                "Domestic dromedary camel",
+                "Domestic duck",
+                "Domestic goat",
+                "Domestic goose",
+                "Domestic guineafowl",
+                "Domestic hedgehog",
+                "Domestic pig",
+                "Domestic pigeon",
+                "Domestic rabbit",
+                "Domestic silkmoth",
+                "Domestic silver fox",
+                "Domestic turkey",
+                "Donkey",
+                "Fancy mouse",
+                "Fancy rat",
+                "Lab rat",
+                "Ferret",
+                "Gayal",
+                "Goldfish",
+                "Guinea pig",
+                "Guppy",
+                "Horse",
+                "Koi",
+                "Llama",
+                "Ringneck dove",
+                "Sheep",
+                "Siamese fighting fish",
+                "Society finch",
+                "Yak",
+                "Water buffalo"
+            ];
+            const random = Math.floor(Math.random() * animalArray.length);
+            return animalArray[random];
+        }
+
+        var glifid = "clmhtbbe70013l40g5knjc4f8"
+        var gamename = "Create Glif Game"
+
+        function onLoad() {
+            var searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.get("glif-id")) {
+                glifid = searchParams.get("glif-id")
+            }
+            if (searchParams.get("gamename")) {
+                gamename = searchParams.get("gamename")
+            }
+            document.getElementById("title").innerHTML = gamename;
+            document.getElementById("glifid").innerHTML = glifid
+            setRandoms();
+            fetchAndProcessJSONL();
+
+        }
+
+        function setRandoms() {
+            document.getElementById('animal').value = randomAnimal()
+            document.getElementById('background').value = randomBackground()
+            document.getElementById('gamename').value = "Flappy " + document.getElementById('animal').value;
+        }
+
+        function isValidHttpUrl(string) {
+            let url;
+
+            try {
+                url = new URL(string);
+            } catch (_) {
+                return false;
+            }
+
+            return url.protocol === "http:" || url.protocol === "https:";
+        }
+
+        function createGame() {
+
+            $(document).ready(function () {
+
+                const glifId = (document.getElementById("animal").value == "test" ?
+                    "clmi665rh0000l30fclfj4smp" :  // TEST GLIF
+                    // "clmhtbbe70013l40g5knjc4f8" // REAL GLIF
+                    document.getElementById("glifid").value
+                )
+                const data = {
+                    id: glifId,
+                    input: {
+                        animal: document.getElementById("animal").value,
+                        background: document.getElementById("background").value
+                    }
+                };
+                console.log("Loading glif");
+                document.getElementById("spinner").style.display = "block";
+                document.getElementById("create-game").innerHTML = `Creating ${document.getElementById("gamename").value}...`
+                document.getElementById("form").style.display = "none";
                 $.ajax({
+                    url: `https://simple-api.glif.app/${glifId}`,
                     type: "POST",
-                    // processData: false,
-                    // contentType: "application/x-www-form-urlencoded",
-                    // headers: {"Access-Control-Allow-Origin":"*"},
-                    url: "https://wanderingstan.com/glif/glif_game_record_jsonl.php",
-                    data: {
-                        'background-image': backgroundImage,
-                        'animal-image': animalImage,
-                        'gamename': gameName,
-                        'gamesummary': gameSummary,
-                        'gameUrl' : gameUrl
-                    },
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
                     success: function (response) {
-                        // Handle the success response from the server
-                        console.log("POST request successful:", response);
-                        window.location = gameUrl
+                        console.log({ response });
+                        output = JSON.parse(response.output);
+                        console.log({ output });
+                        if (!output || !isValidHttpUrl(output.backgroundImageUrl) || !isValidHttpUrl(output.animalImageUrl)) {
+                            console.error("Got invalid URLs returned.");
+                            window.alert(`Got invalid URLs returned from GLIF: ${output}`)
+                            return;
+                        }
+
+                        var backgroundImage = output.backgroundImageUrl;
+                        var animalImage = output.animalImageUrl;
+                        var gameName = document.getElementById("gamename").value;
+                        var gameSummary = output.gameSummary;
+
+                        var gameUrl = (`index.html?j=${encodeURIComponent(response.output)}` +
+                            (document.getElementById("easy").checked ? "&easy" : ""));
+
+                        // var gameUrl = (`index.html` +
+                        //     `?background-image=${encodeURIComponent(backgroundImage)}` +
+                        //     `&animal-image=${encodeURIComponent(animalImage)}` +
+                        //     `&gamename=${encodeURIComponent(gameName)}` +
+                        //     `&gamesummary=${encodeURIComponent(gameSummary)}` +
+                        //     (document.getElementById("easy").checked ? "&easy" : ""));
+                        console.log(gameUrl);
+                        document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
+                        // window.location = gameUrl;
+
+                        // Record our game on server
+                        $.ajax({
+                            type: "POST",
+                            // processData: false,
+                            // contentType: "application/x-www-form-urlencoded",
+                            // headers: {"Access-Control-Allow-Origin":"*"},
+                            url: "https://wanderingstan.com/glif/glif_game_record_jsonl.php",
+                            data: {
+                                'background-image': backgroundImage,
+                                'animal-image': animalImage,
+                                'gamename': gameName,
+                                'gamesummary': gameSummary,
+                                'gameUrl': gameUrl
+                            },
+                            success: function (response) {
+                                // Handle the success response from the server
+                                console.log("POST request successful:", response);
+                                window.location = gameUrl
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle errors
+                                console.error("POST request failed:", error);
+                                window.location = gameUrl
+                            }
+                        }).fail(function (jqXHR, exception) {
+                            var msg = '';
+                            if (jqXHR.status === '(failed)net::ERR_INTERNET_DISCONNECTED') {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            if (jqXHR.status === 0) {
+                                msg = 'Not connect.\n Verify Network.';
+                            } else if (jqXHR.status == 413) {
+                                msg = 'Image size is too large.';
+                            } else if (jqXHR.status == 404) {
+                                msg = 'Requested page not found. [404]';
+                            } else if (jqXHR.status == 405) {
+                                msg = 'Image size is too large.';
+                            } else if (jqXHR.status == 500) {
+                                msg = 'Internal Server Error [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            console.log(msg);
+                        });
+                        document.getElementById("spinner").style.display = "none";
                     },
                     error: function (xhr, status, error) {
-                        // Handle errors
-                        console.error("POST request failed:", error);
-                        window.location = gameUrl
+                        console.error('Error:', error);
+                        document.getElementById("spinner").style.display = "none";
+                        // window.alert(`Got an error: ${error.toString()}`);
+                        alert(xhr.responseText);
                     }
-                }).fail(function (jqXHR, exception) { 
-                    var msg = '';
-                    if (jqXHR.status === '(failed)net::ERR_INTERNET_DISCONNECTED') {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText; 
-                    }
-                    if (jqXHR.status === 0) {
-                            msg = 'Not connect.\n Verify Network.';
-                    } else if (jqXHR.status == 413) {
-                            msg = 'Image size is too large.'; 
-                    }  else if (jqXHR.status == 404) {
-                            msg = 'Requested page not found. [404]'; 
-                    } else if (jqXHR.status == 405) {
-                            msg = 'Image size is too large.'; 
-                    } else if (jqXHR.status == 500) {
-                            msg = 'Internal Server Error [500].'; 
-                    } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.'; 
-                    } else if (exception === 'timeout') {
-                            msg = 'Time out error.'; 
-                    } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.'; 
-                    } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText; 
-                    }
-                    console.log(msg);
                 });
-                document.getElementById("spinner").style.display = "none";
-            },
-            error: function(xhr, status, error) {
-              console.error('Error:', error);
-              document.getElementById("spinner").style.display = "none";
-              // window.alert(`Got an error: ${error.toString()}`);
-              alert(xhr.responseText);
-            }
-          });
-        });
+            });
 
-    }
+        }
     </script>
 
     <style>
-
-
         body {
             font-size: 150%;
-            font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",sans-serif;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
             background-color: #4ec0ca;
         }
 
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             font-size: 100%;
             color: rgb(120, 113, 108);
             filter: drop-shadow(rgba(0, 0, 0, 0.05) 0px 1px 1px);
@@ -819,7 +821,7 @@
             text-align: center;
         }
 
-        #spinner img{
+        #spinner img {
             width: 32px;
         }
 
@@ -850,10 +852,12 @@
         #forglifid {
             font-size: 50%;
         }
+
         #glifid {
             font-size: 50%;
             font-family: monospace;
         }
+
         #example {
             font-size: 50%;
         }
@@ -870,81 +874,86 @@
             height: 120px;
             display: inline-block;
             text-align: center;
-            cursor: pointer;   
-            margin: 2px;         
+            cursor: pointer;
+            margin: 2px;
         }
+
         .game-button p {
             font-size: small;
             margin-top: 0px;
-        }   
+        }
+
         .game-button img {
             width: 60px;
             border-radius: 15px;
-        }             
+        }
     </style>
 </head>
 
 <body onload="onLoad()">
 
-<div id="main">
+    <div id="main">
 
-    <div id="form">
-        <h1 id="title">Create Glif Game</h1>
+        <div id="form">
+            <h1 id="title">Create Glif Game</h1>
 
 
-        <div id="old-games">
+            <div id="old-games">
+            </div>
+
+            <div>
+                <button id="randomButton" onclick="setRandoms()">Randomize</button>
+            </div>
+
+            <div>
+                <label for="gamename">Game Name:</label><br />
+                <input type="text" name="gamename" id="gamename" value="Game" />
+            </div>
+
+            <div>
+                <label for="animal">Character, animal or <a
+                        href="https://glif.app/glifmoji">&lt;Glifmoji&gt;</a>:</label><br />
+                <input type="text" name="animal" id="animal" value="test" />
+            </div>
+
+            <div>
+                <label for="background">Background</label><br />
+                <textarea name="background" id="background">Arctic expanse with icebergs and blue sky.</textarea>
+            </div>
+
+            <div>
+                <label for="artstyle">Art style:</label>
+
+                <select name="artstyle" id="artstyle"
+                    onchange="document.getElementById('glifid').value=document.getElementById('artstyle').value">
+                    <option value="clms1zgel0036mh0furpcgssi">Cartoon</option>
+                    <option value="clmqkz0ce000jl60fj9f4hvwd">Realistic</option>
+                </select>
+
+            </div>
+            <div>
+                <input type="checkbox" name="easy" id="easy" /><label for="easy">Easy Game</label>
+            </div>
+
+
+            <button id="createGameButton" onclick="createGame()">Create Game</button>
+            <br />
+            <br />
+            <div>
+                <label id="forglifid" for="glifid">Glif ID: (Advanced)</label><br />
+                <input type="text" name="glifid" id="glifid" value="clms1zgel0036mh0furpcgssi" />
+                <div id="example"><a target="_blank"
+                        href="https://glif.app/@wanderingstan/glifs/clms1zgel0036mh0furpcgssi">Example glif</a></div>
+            </div>
         </div>
 
-        <div>
-            <button id="randomButton" onclick="setRandoms()">Randomize</button>
+        <div id="spinner">
+            <img src="./assets/spinner.gif" />
+            <div id="create-game">Creating game...</div>
         </div>
 
-        <div>
-            <label for="gamename">Game Name:</label><br/>
-            <input type="text" name="gamename" id="gamename" value="Game"/>
-        </div>
-
-        <div>
-            <label for="animal">Character, animal or <a href="https://glif.app/glifmoji">&lt;Glifmoji&gt;</a>:</label><br/>
-            <input type="text" name="animal" id="animal" value="test"/>
-        </div>
-
-        <div>
-            <label for="background">Background</label><br/>
-            <textarea name="background" id="background">Arctic expanse with icebergs and blue sky.</textarea>
-        </div>
-
-        <div>
-            <label for="artstyle">Art style:</label>
-
-            <select name="artstyle" id="artstyle" onchange="document.getElementById('glifid').value=document.getElementById('artstyle').value">
-              <option value="clms1zgel0036mh0furpcgssi">Cartoon</option>
-              <option value="clmqkz0ce000jl60fj9f4hvwd">Realistic</option>
-            </select>
-
-        </div>
-        <div>
-            <input type="checkbox" name="easy" id="easy"/><label for="easy">Easy Game</label>
-        </div>
-
-
-        <button id="createGameButton" onclick="createGame()">Create Game</button>
-        <br/>
-        <br/>
-        <div>
-            <label id="forglifid" for="glifid">Glif ID: (Advanced)</label><br/>
-            <input type="text" name="glifid" id="glifid" value="clms1zgel0036mh0furpcgssi"/>
-            <div id="example"><a target="_blank" href="https://glif.app/@wanderingstan/glifs/clms1zgel0036mh0furpcgssi">Example glif</a></div>
-        </div>
+        <div id="gamelink"></div>
     </div>
-
-    <div id="spinner">
-        <img  src="./assets/spinner.gif"/>
-        <div id="create-game">Creating game...</div>
-    </div>
-
-    <div id="gamelink"></div>
-</div>
 
 </body>
 
