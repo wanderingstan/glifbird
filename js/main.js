@@ -207,15 +207,16 @@ $(document).ready(function () {
         pipeImageUrl = gameJson.pipeBottomUrl;
         gameName = gameJson.gameName;
         gameSummary = gameJson.gameSummary;
+        console.log({gameJson});
     }
 
     $("#gamename").text(gamename);
     $("#gamesummary").text(gamesummary);
 
-    // if (!birdImageUrl || !backgroundImage) {
-    //    // Go to create if nothing specified
-    //    window.location = "create.html"
-    // }
+    if (!birdImageUrl || !backgroundImageUrl) {
+       // Go to create interface if nothing specified
+       window.location = "create.html"
+    }
 
     if (searchParams.get("debug") != null)
         debugmode = true;

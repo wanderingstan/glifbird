@@ -707,7 +707,7 @@
                     data: JSON.stringify(data),
                     success: function (response) {
                         console.log({ response });
-                        output = JSON.parse(response.output);
+                        var output = JSON.parse(response.output);
                         console.log({ output });
                         if (!output || !isValidHttpUrl(output.backgroundImageUrl) || !isValidHttpUrl(output.animalImageUrl)) {
                             console.error("Got invalid URLs returned.");
@@ -720,7 +720,11 @@
                         var gameName = document.getElementById("gamename").value;
                         var gameSummary = output.gameSummary;
 
-                        var gameUrl = (`index.html?j=${encodeURIComponent(response.output)}` +
+                        output.easy = document.getElementById("easy").checked; // Add this which doesn't come from API
+                        output.gamename = document.getElementById("gamename").value;
+
+                        var gameStateJsonString = JSON.stringify(output);
+                        var gameUrl = (`index.html?j=${encodeURIComponent(gameStateJsonString)}` +
                             (document.getElementById("easy").checked ? "&easy" : ""));
 
                         // var gameUrl = (`index.html` +
@@ -732,6 +736,52 @@
                         console.log(gameUrl);
                         document.getElementById("gamelink").innerHTML = `<a href="${gameUrl}">Launch Game</a>`;
                         // window.location = gameUrl;
+
+
+
+                        // Send the JSON data via HTTP POST
+                        $.ajax({
+                            type: "POST",
+                            url: "https://wanderingstan.com/glif/glif_game_record_json_jsonl.php",
+                            data: gameStateJsonString,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(response) {
+                                // Handle the success response here
+                                console.log("Data sent successfully");
+                                console.log(response); // Response from the server
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle any errors here
+                                console.error("Error sending data: " + error);
+                            }
+                        }).fail(function (jqXHR, exception) {
+                            var msg = '';
+                            if (jqXHR.status === '(failed)net::ERR_INTERNET_DISCONNECTED') {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            if (jqXHR.status === 0) {
+                                msg = 'Not connect.\n Verify Network.';
+                            } else if (jqXHR.status == 413) {
+                                msg = 'Image size is too large.';
+                            } else if (jqXHR.status == 404) {
+                                msg = 'Requested page not found. [404]';
+                            } else if (jqXHR.status == 405) {
+                                msg = 'Image size is too large.';
+                            } else if (jqXHR.status == 500) {
+                                msg = 'Internal Server Error [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            console.log(msg);
+                        });
+
 
                         // Record our game on server
                         $.ajax({
