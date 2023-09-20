@@ -225,7 +225,7 @@ $(document).ready(function() {
 
    //stan: load our new bird and sky
    loadBirdImage(birdImageUrl);
-   loadSkyImage(backgroundImage);
+   loadSkyImage(backgroundImageUrl);
    loadPipeImage(pipeImageUrl);
 
    //get the highscore
