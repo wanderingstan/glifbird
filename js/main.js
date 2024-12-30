@@ -246,10 +246,10 @@ function rgbToHsv(r, g, b) {
 }
 
 function updateHueRotate(hueRotateValue, targetSelectorText) {
-  const styleSheets = document.styleSheets;
-  for (let i = 0; i < styleSheets.length; i++) {
+  const stylesheet = document.getElementById('mainStylesheet').sheet;
+  if (stylesheet) {
       try {
-          const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+          const rules = stylesheet.cssRules || stylesheet.rules;
           for (let j = 0; j < rules.length; j++) {
               if (rules[j].selectorText === targetSelectorText) {
                   rules[j].style.filter = `hue-rotate(${hueRotateValue}deg)`;
@@ -257,9 +257,7 @@ function updateHueRotate(hueRotateValue, targetSelectorText) {
               }
           }
       } catch (e) {
-        if (e.name !== 'SecurityError') {
           console.error(e);
-        }
       }
   }
 }
