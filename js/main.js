@@ -246,20 +246,18 @@ function rgbToHsv(r, g, b) {
 }
 
 function updateHueRotate(hueRotateValue, targetSelectorText) {
-  const stylesheet = document.getElementById('mainStylesheet').sheet;
-  if (stylesheet) {
-      try {
-          const rules = stylesheet.cssRules || stylesheet.rules;
-          for (let j = 0; j < rules.length; j++) {
-              if (rules[j].selectorText === targetSelectorText) {
-                  rules[j].style.filter = `hue-rotate(${hueRotateValue}deg)`;
-                  return;
-              }
-          }
-      } catch (e) {
-          console.error(e);
-      }
+
+  let styleEl = document.getElementById('dynamicStyles');
+  if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'dynamicStyles';
+      document.head.appendChild(styleEl);
   }
+
+    // Add/update the rule
+    const rule = `${targetSelectorText} { filter: hue-rotate(${hueRotateValue}deg); }`;
+    styleEl.textContent = rule;
+
 }
 
 
