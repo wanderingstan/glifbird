@@ -248,16 +248,21 @@ function rgbToHsv(r, g, b) {
 function updateHueRotate(hueRotateValue, targetSelectorText) {
   const styleSheets = document.styleSheets;
   for (let i = 0; i < styleSheets.length; i++) {
-      const rules = styleSheets[i].cssRules || styleSheets[i].rules;
-      for (let j = 0; j < rules.length; j++) {
-          if (rules[j].selectorText === targetSelectorText) {
-              rules[j].style.filter = `hue-rotate(${hueRotateValue}deg)`;
-              return;
+      try {
+          const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+          for (let j = 0; j < rules.length; j++) {
+              if (rules[j].selectorText === targetSelectorText) {
+                  rules[j].style.filter = `hue-rotate(${hueRotateValue}deg)`;
+                  return;
+              }
           }
+      } catch (e) {
+        if (e.name !== 'SecurityError') {
+          console.error(e);
+        }
       }
   }
 }
-
 
 
 var gameIsRunning = false;
