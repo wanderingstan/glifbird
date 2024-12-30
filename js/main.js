@@ -81,8 +81,8 @@ function loadPipeImage(pipeImageUrl) {
     var image = new Image();
     image.onload = function () {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
-        context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
+        // context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
+        // context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
 
         // Now do regular piping
         //var pipeCanvas = document.getElementById("pipe-bottom-canvas");
@@ -182,22 +182,100 @@ function loadSkyImage(skyImageUrl) {
 
 }
 
+//
+// Color functions
+//
+
+async function getAverageHueFromUrl(imageUrl) {
+  const image = new Image();
+  image.crossOrigin = "Anonymous"; // This is needed if the image is from a different origin
+  image.src = imageUrl;
+
+  await new Promise((resolve) => {
+      image.onload = resolve;
+  });
+
+  return getAverageHue(image);
+}
+
+function getAverageHue(image) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0, image.width, image.height);
+  const imageData = ctx.getImageData(0, 0, image.width, image.height);
+  const data = imageData.data;
+
+  let totalHue = 0;
+  let count = 0;
+
+  for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+
+      const hsv = rgbToHsv(r, g, b);
+      totalHue += hsv[0];
+      count++;
+  }
+
+  return totalHue / count;
+}
+
+function rgbToHsv(r, g, b) {
+  r /= 255, g /= 255, b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, v = max;
+
+  const d = max - min;
+  s = max === 0 ? 0 : d / max;
+
+  if (max === min) {
+      h = 0; // achromatic
+  } else {
+      switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+  }
+
+  return [h * 360, s, v];
+}
+
+function updateHueRotate(hueRotateValue, targetSelectorText) {
+  const styleSheets = document.styleSheets;
+  for (let i = 0; i < styleSheets.length; i++) {
+      const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+      for (let j = 0; j < rules.length; j++) {
+          if (rules[j].selectorText === targetSelectorText) {
+              rules[j].style.filter = `hue-rotate(${hueRotateValue}deg)`;
+              return;
+          }
+      }
+  }
+}
+
 
 
 var gameIsRunning = false;
 
-$(document).ready(function () {
+//parse glif images passed in
+var searchParams = new URLSearchParams(window.location.search);
+var gameJsonString = searchParams.get("j") // all game in one json
 
-    //parse glif images passed in
-    var searchParams = new URLSearchParams(window.location.search);
-    var gameJsonString = searchParams.get("j") // all game in one json
+// legacy
+var birdImageUrl = searchParams.get("animal-image")
+var pipeImageUrl = searchParams.get("pipe-image")
+var backgroundImageUrl = searchParams.get("background-image")
+var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
+var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
 
-    // legacy
-    var birdImageUrl = searchParams.get("animal-image")
-    var pipeImageUrl = searchParams.get("pipe-image")
-    var backgroundImageUrl = searchParams.get("background-image")
-    var gamename = searchParams.get("gamename") != null ? searchParams.get("gamename") : "Gliffy Bird"
-    var gamesummary = searchParams.get("gamesummary") != null ? searchParams.get("gamesummary") : ""
+
+$(document).ready(async function () {
+    console.log("Document is ready");
 
     if (gameJsonString) {
         // oh my could this be cleaned up...
@@ -209,6 +287,30 @@ $(document).ready(function () {
         gameSummary = gameJson.gameSummary;
         console.log({gameJson});
     }
+
+    const imageSelectorPairs = [
+      [birdImageUrl, '#bird'],
+      ["../assets/land.png", "#land"],
+      ["../assets/sky2.png", "#sky"],
+      ["../assets/pipe.png", ".pipe"]
+  ];
+
+    try {
+        for (const [imageUrl, selector] of imageSelectorPairs) {
+            const sourceHue = await getAverageHueFromUrl(birdImageUrl);
+            const targetHue = await getAverageHueFromUrl(imageUrl);
+            console.log(`Source Hue for ${selector}:`, sourceHue);
+            console.log(`Target Hue for ${selector}:`, targetHue);
+            const hueRotateValue = targetHue - sourceHue;
+            console.log(`Hue Rotate Value for ${selector}:`, hueRotateValue);
+
+            // Update the hue-rotate filter for the element globally
+            updateHueRotate(hueRotateValue, selector);
+        }
+    } catch (error) {
+        console.error("Error calculating hues:", error);
+    }
+
 
     $("#gamename").text(gamename);
     $("#gamesummary").text(gamesummary);
