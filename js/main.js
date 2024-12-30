@@ -81,8 +81,8 @@ function loadPipeImage(pipeImageUrl) {
     var image = new Image();
     image.onload = function () {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        // context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
-        // context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
+        context.fillStyle = "rgba(0,0,0,0.009)"; // RGBA // Freaks out if alpha is actually 0. :(
+        context.fillFlood(50, 75, 50); // Kindofa guess as to start in top left corner and floodfill from there
 
         // Now do regular piping
         //var pipeCanvas = document.getElementById("pipe-bottom-canvas");

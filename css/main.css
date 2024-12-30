@@ -313,6 +313,7 @@ Screen - Game
 
     -webkit-animation: animLand 2516ms linear infinite;
     animation: animLand 2516ms linear infinite;
+    filter: hue-rotate(0deg); /* Initial hue-rotate value */
 }
 
 #bigscore {
