@@ -290,9 +290,9 @@ $(document).ready(async function () {
 
     const imageSelectorPairs = [
       [birdImageUrl, '#bird'],
-      ["../assets/land.png", "#land"],
-      ["../assets/sky2.png", "#sky"],
-      ["../assets/pipe.png", ".pipe"]
+      ["./assets/land.png", "#land"],
+      ["./assets/sky2.png", "#sky"],
+      ["./assets/pipe.png", ".pipe"]
   ];
 
     try {
