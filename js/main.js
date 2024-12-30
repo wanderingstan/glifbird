@@ -246,7 +246,6 @@ function rgbToHsv(r, g, b) {
 }
 
 function updateHueRotate(hueRotateValue, targetSelectorText) {
-
   let styleEl = document.getElementById('dynamicStyles');
   if (!styleEl) {
       styleEl = document.createElement('style');
@@ -254,12 +253,14 @@ function updateHueRotate(hueRotateValue, targetSelectorText) {
       document.head.appendChild(styleEl);
   }
 
-    // Add/update the rule
-    const rule = `${targetSelectorText} { filter: hue-rotate(${hueRotateValue}deg); }`;
-    styleEl.textContent = rule;
+  // Create a rule for this selector
+  const rule = `${targetSelectorText} { filter: hue-rotate(${hueRotateValue}deg); }`;
 
+  // Add to existing rules instead of replacing
+  const existingRules = styleEl.textContent;
+  styleEl.textContent = existingRules + '\n' + rule;
+  console.log(styleEl.textContent)
 }
-
 
 var gameIsRunning = false;
 
@@ -290,10 +291,10 @@ $(document).ready(async function () {
     }
 
     const imageSelectorPairs = [
+      ["./assets/pipe.png", ".pipe"],
       [birdImageUrl, '#bird'],
       ["./assets/land.png", "#land"],
-      ["./assets/sky2.png", "#sky"],
-      ["./assets/pipe.png", ".pipe"]
+      ["./assets/sky2.png", "#sky"]
   ];
 
     try {
