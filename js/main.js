@@ -297,9 +297,9 @@ $(document).ready(async function () {
       ["./assets/sky2.png", "#sky"]
   ];
 
+    const sourceHue = await getAverageHueFromUrl(backgroundImageUrl);
     try {
         for (const [imageUrl, selector] of imageSelectorPairs) {
-            const sourceHue = await getAverageHueFromUrl(birdImageUrl);
             const targetHue = await getAverageHueFromUrl(imageUrl);
             console.log(`Source Hue for ${selector}:`, sourceHue);
             console.log(`Target Hue for ${selector}:`, targetHue);
