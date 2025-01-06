@@ -4,7 +4,7 @@
   <head>
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>Full Viewport Iframe</title>
+    <title>{game_title}</title>
     <style>
       html,
       body {
@@ -31,6 +31,12 @@
     <div id='player-image-content' style='display:none'>{player_image_url}</div>
     <div id='background-image-description-content' style='display:none'>{background_image_description}</div>
     <div id='player-physical-description-content' style='display:none'>{player_physical_description}</div>
+    <div id='game-title-content' style='display:none'>{game_title}</div>
+
+    <div id='gravity-multiplier-content' style='display:none'>1.0</div>
+    <div id='jump-multiplier-content' style='display:none'>1.0</div>
+    <div id='pipeheight-multiplier-content' style='display:none'>1.0</div>
+    <div id='pipewidth-multiplier-content' style='display:none'>1.0</div>
 
 
     <!-- Example -->
@@ -54,16 +60,14 @@
 
     <script>
       const variables = {
-        'background-image': document.getElementById('background-image-content')
-          .textContent,
-        'animal-image': document.getElementById('player-image-content')
-          .textContent,
-        gamename: document.getElementById(
-          'background-image-description-content'
-        ).textContent,
-        gamesummary: document.getElementById(
-          'player-physical-description-content'
-        ).textContent,
+          'background-image': document.getElementById('background-image-content').textContent,
+          'animal-image': document.getElementById('player-image-content').textContent,
+          'gamename': document.getElementById('game-title-content').textContent,
+          // 'gamesummary': document.getElementById('game-summary-content').textContent,
+          'gravity_multiplier': document.getElementById('gravity-multiplier-content').textContent,
+          'jump_multiplier': document.getElementById('jump-multiplier-content').textContent,
+          'pipeheight_multiplier': document.getElementById('pipeheight-multiplier-content').textContent,
+          'pipewidth_multiplier': document.getElementById('pipewidth-multiplier-content').textContent
       };
 
       function constructUrl() {
