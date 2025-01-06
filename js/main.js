@@ -294,7 +294,7 @@ $(document).ready(async function () {
       // [birdImageUrl, '#bird'],
       ["./assets/pipe.png", ".pipe"],
       ["./assets/land.png", "#land"],
-      ["./asssets/ceiling.png", "#ceiling"],
+      ["./assets/ceiling.png", "#ceiling"],
   ];
 
     // We adust the art to match up with the background
