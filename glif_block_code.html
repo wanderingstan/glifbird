@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- This is the code that goes into the glif block. -->
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Full Viewport Iframe</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id='gameFrame' title='Embedded content'></iframe>
+
+
+    <!-- use DOM elements since we can't count on corrent quote escaping -->
+    <div id='background-image-content' style='display:none'>{background-image-url}</div>
+    <div id='player-image-content' style='display:none'>{player_image_url}</div>
+    <div id='background-image-description-content' style='display:none'>{background_image_description}</div>
+    <div id='player-physical-description-content' style='display:none'>{player_physical_description}</div>
+
+
+    <!-- Example -->
+  <!--
+    <div id='background-image-content' style='display: none'>
+      https://res.cloudinary.com/dkpfhyd71-comfy/image/upload/v1736184293/comfy/0713e676-fb36-41b0-b2a3-4b25eee6ba90.jpg
+    </div>
+    <div id='player-image-content' style='display: none'>
+      https://res.cloudinary.com/dkpfhyd71-comfy/image/upload/v1736184284/comfy/05e59b8a-a65f-49a0-a75b-a52df2bc2a32.png
+    </div>
+    <div id='background-image-description-content' style='display: none'>
+      a utah desert
+    </div>
+    <div id='player-physical-description-content' style='display: none'>
+      Side profile image of a fat bird flying. The bird is flying, so the wings
+      are extended. No legs are showing. Show only the bird, no extra background
+      objects, no background.
+    </div>
+
+  -->
+
+    <script>
+      const variables = {
+        'background-image': document.getElementById('background-image-content')
+          .textContent,
+        'animal-image': document.getElementById('player-image-content')
+          .textContent,
+        gamename: document.getElementById(
+          'background-image-description-content'
+        ).textContent,
+        gamesummary: document.getElementById(
+          'player-physical-description-content'
+        ).textContent,
+      };
+
+      function constructUrl() {
+        const baseUrl = 'https://wanderingstan.github.io/glifbird/index.html';
+        const url = new URL(baseUrl);
+
+        // Add each variable as a query parameter if it has a value
+        for (const [key, value] of Object.entries(variables)) {
+          if (value) {
+            url.searchParams.append(key, value);
+          }
+        }
+
+        return url.toString();
+      }
+
+      // Function to update the iframe URL
+      function updateIframe() {
+        const iframe = document.getElementById('gameFrame');
+        iframe.src = constructUrl();
+      }
+
+      // Example of how to set variables and update the iframe
+      function setVariable(name, value) {
+        variables[name] = value;
+        updateIframe();
+      }
+
+      // Initial setup
+      updateIframe();
+
+    </script>
+  </body>
+</html>
