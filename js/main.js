@@ -717,11 +717,11 @@ $("#share").click(function () {
     var copyText = $("#share-url");
     copyText.select();
     copyText[0].setSelectionRange(0, 99999); // For mobile devices
-    navigator.clipboard.writeText(copyText.val()).then(function() {
-        alert("Game URL copied to clipboard.");
-    }).catch(function(error) {
-        console.error("Error copying text: ", error);
-    });
+    // navigator.clipboard.writeText(copyText.val()).then(function() {
+    //     alert("Game URL copied to clipboard.");
+    // }).catch(function(error) {
+    //     console.error("Error copying text: ", error);
+    // });
 });
 // $("#share").click(async function () {
 //     console.log("share")
