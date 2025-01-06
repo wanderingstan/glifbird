@@ -694,24 +694,13 @@ function showScore() {
     $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
     $("#replay").css({ y: '40px', opacity: 0 });
     $("#share").css({ y: '40px', opacity: 0 });
-    $("#create").css({ y: '40px', opacity: 0 });
+    $("#share-url").val(window.location.href);
     $("#scoreboard").transition({ y: '0px', opacity: 1 }, 600, 'ease', function () {
         //When the animation is done, animate in the replay button and SWOOSH!
         soundSwoosh.stop();
         soundSwoosh.play();
         $("#replay").transition({ y: '0px', opacity: 1 }, 600, 'ease');
-        $("#create").transition({ y: '0px', opacity: 1 }, 1400, 'ease');
-
-        if (navigator.canShare && navigator.canShare({
-            title: "gameName",
-            text: "message",
-            url: `${window.location}`
-        })
-        ) {
-            $("#share").transition({ y: '0px', opacity: 1 }, 1200, 'ease');
-        } else {
-            $("#share").hide();
-        }
+        $("#share").transition({ y: '0px', opacity: 1 }, 1400, 'ease');
 
         //also animate in the MEDAL! WOO!
         if (wonmedal) {
@@ -724,25 +713,31 @@ function showScore() {
     replayclickable = true;
 }
 
-$("#create").click(function () {
-    window.location = "./create.html";
-})
-
-$("#share").click(async function () {
-    console.log("share")
-    const gameName = "Gliffy Bird";
-    const message = "Sample game from glif";
-    try {
-        await navigator.share({
-            title: gameName,
-            text: message,
-            url: `${window.location}`
-        });
-        console.log("Shared!");
-    } catch (err) {
-        window.alert("Did not share." + err.toString());
-    }
+$("#share").click(function () {
+    var copyText = $("#share-url");
+    copyText.select();
+    copyText[0].setSelectionRange(0, 99999); // For mobile devices
+    navigator.clipboard.writeText(copyText.val()).then(function() {
+        alert("Game URL copied to clipboard.");
+    }).catch(function(error) {
+        console.error("Error copying text: ", error);
+    });
 });
+// $("#share").click(async function () {
+//     console.log("share")
+//     const gameName = "Gliffy Bird";
+//     const message = "Sample game from glif";
+//     try {
+//         await navigator.share({
+//             title: gameName,
+//             text: message,
+//             url: `${window.location}`
+//         });
+//         console.log("Shared!");
+//     } catch (err) {
+//         window.alert("Did not share." + err.toString());
+//     }
+// });
 
 $("#replay").click(function () {
     console.log("replay")

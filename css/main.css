@@ -313,7 +313,6 @@ Screen - Game
 
     -webkit-animation: animLand 2516ms linear infinite;
     animation: animLand 2516ms linear infinite;
-    filter: hue-rotate(0deg); /* Initial hue-rotate value */
 }
 
 #bigscore {
@@ -433,6 +432,12 @@ Screen - Game
     height: 70px;
     width: 115px;
     cursor: pointer;
+    font-size: 20px; /* Increased font size */
+    color: white; /* White text color */
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #create {
