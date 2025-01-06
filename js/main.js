@@ -294,9 +294,10 @@ $(document).ready(async function () {
       // [birdImageUrl, '#bird'],
       ["./assets/pipe.png", ".pipe"],
       ["./assets/land.png", "#land"],
-      ["./assets/sky2.png", "#sky"]
+      ["./asssets/ceiling.png", "#ceiling"],
   ];
 
+    // We adust the art to match up with the background
     const sourceHue = await getAverageHueFromUrl(backgroundImageUrl);
     try {
         for (const [imageUrl, selector] of imageSelectorPairs) {
