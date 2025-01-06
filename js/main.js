@@ -8,19 +8,19 @@ var states = Object.freeze({
 
 var currentstate;
 
+// Configurable settings:
 var gravity = 0.25;
-var velocity = 0;
-var position = 180;
-var rotation = 0;
 var jump = -4.6;
-var flyArea = $("#flyarea").height();
-
-var score = 0;
-var highscore = 0;
-
 var pipeheight = 130; // 90;
 var pipewidth = 52;
+
+var velocity = 0;
+var position = 180;
+var flyArea = $("#flyarea").height();
 var pipes = new Array();
+var score = 0;
+var highscore = 0;
+var rotation = 0;
 
 var replayclickable = false;
 
@@ -327,6 +327,27 @@ $(document).ready(async function () {
     if (searchParams.get("easy") != null)
         pipeheight = 200;
 
+    function setParamIfPresent(paramName, defaultValue) {
+      const paramValue = searchParams.get(paramName);
+      return paramValue !== null ? parseFloat(paramValue) : defaultValue;
+    }
+
+    function applyMultiplierIfPresent(paramName, currentValue) {
+      const multiplierValue = searchParams.get(`${paramName}_multiplier`);
+      return multiplierValue !== null ? currentValue * parseFloat(multiplierValue) : currentValue;
+    }
+
+    // Set variables from search parameters if present
+    gravity = setParamIfPresent("gravity", gravity);
+    jump = setParamIfPresent("jump", jump);
+    pipeheight = setParamIfPresent("pipeheight", pipeheight);
+    pipewidth = setParamIfPresent("pipewidth", pipewidth);
+
+    // Apply multipliers if present
+    gravity = applyMultiplierIfPresent("gravity", gravity);
+    jump = applyMultiplierIfPresent("jump", jump);
+    pipeheight = applyMultiplierIfPresent("pipeheight", pipeheight);
+    pipewidth = applyMultiplierIfPresent("pipewidth", pipewidth);
 
     //stan: load our new bird and sky
     loadBirdImage(birdImageUrl);
@@ -353,13 +374,17 @@ $(document).on('click', function (evt) {
 });
 
 function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-    }
-    return "";
+  try {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i].trim();
+          if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+      }
+      return "";
+  } catch (e) {
+      return "";
+  }
 }
 
 function setCookie(cname, cvalue, exdays) {
