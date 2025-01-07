@@ -6,22 +6,66 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>{game_title}</title>
     <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+      html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background: #000;
       }
+
+      .iframe-container {
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .aspect-ratio-box {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          max-width: calc(100vh * 3/4);  /* 3:4 aspect ratio */
+          max-height: calc(100vw * 4/3);  /* 3:4 aspect ratio */
+      }
+
       iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-        display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
       }
-    </style>
-  </head>
+  </style>
+    <script>
+      // Reference size where game looks perfect
+      const REFERENCE_WIDTH = 465;
+      const REFERENCE_HEIGHT = 875;
+
+      function adjustIframeZoom() {
+          const container = document.querySelector('.aspect-ratio-box');
+          const iframe = document.querySelector('iframe');
+
+          // Get the actual dimensions
+          const width = container.clientWidth;
+          const height = container.clientHeight;
+
+          // Calculate zoom based on width ratio (since the game is width-constrained)
+          const zoomFactor = width / REFERENCE_WIDTH;
+
+          // Apply the zoom
+          iframe.style.zoom = zoomFactor;
+      }
+
+      // Add event listeners
+      window.addEventListener('load', adjustIframeZoom);
+      window.addEventListener('resize', adjustIframeZoom);
+  </script>
+
+</head>
   <body>
     <iframe id='gameFrame' title='Embedded content'></iframe>
 
